@@ -13,16 +13,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Email
 {
-
     const STATUS_FAILED = 'FAILED';
     const STATUS_READY = 'READY';
     const STATUS_PROCESSING = 'PROCESSING';
     const STATUS_COMPLETE = 'COMPLETE';
     const STATUS_CANCELLED = 'CANCELLED';
 
-
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -93,7 +91,6 @@ class Email
      */
     private $status;
 
-
     /**
      * @var string
      *
@@ -102,7 +99,7 @@ class Email
     private $retries;
 
     /**
-     * @var \DateTime $created
+     * @var \DateTime
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
@@ -110,7 +107,7 @@ class Email
     private $createdAt;
 
     /**
-     * @var \DateTime $updated
+     * @var \DateTime
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
@@ -118,7 +115,7 @@ class Email
     private $updatedAt;
 
     /**
-     * @var string $createdBy
+     * @var string
      *
      * @Gedmo\Blameable(on="create")
      * @ORM\Column(name="created_by", type="string", nullable=true)
@@ -126,7 +123,7 @@ class Email
     private $createdBy;
 
     /**
-     * @var string $updatedBy
+     * @var string
      *
      * @Gedmo\Blameable(on="update")
      * @ORM\Column(name="updated_by", type="string", nullable=true)
@@ -134,13 +131,11 @@ class Email
     private $updatedBy;
 
     /**
-     * @var \DateTime $sentAt
+     * @var \DateTime
      *
      * @ORM\Column(name="sent_at", type="datetime", nullable=true)
      */
     private $sentAt;
-
-
 
     /**
      * @var \Swift_Message
@@ -149,11 +144,10 @@ class Email
      */
     private $errorMessage;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -164,6 +158,7 @@ class Email
      * Set subject
      *
      * @param string $subject
+     *
      * @return Email
      */
     public function setSubject($subject)
@@ -187,6 +182,7 @@ class Email
      * Set fromEmail
      *
      * @param string $fromEmail
+     *
      * @return Email
      */
     public function setFromEmail($fromEmail)
@@ -210,6 +206,7 @@ class Email
      * Set toEmail
      *
      * @param string $toEmail
+     *
      * @return Email
      */
     public function setToEmail($toEmail)
@@ -271,14 +268,15 @@ class Email
 
     /**
      * @param string $replyToEmail
+     *
      * @return Email
      */
     public function setReplyToEmail($replyToEmail)
     {
         $this->replyToEmail = $replyToEmail;
+
         return $this;
     }
-
 
     /**
      * @return string
@@ -295,8 +293,6 @@ class Email
     {
         $this->body = $body;
     }
-
-
 
     /**
      * @return \Swift_Mime_Message
@@ -361,8 +357,6 @@ class Email
     {
         $this->sentAt = $sentAt;
     }
-
-
 
     /**
      * @return string
@@ -443,8 +437,4 @@ class Email
     {
         $this->retries = $retries;
     }
-
-
-
-
 }
