@@ -2,13 +2,11 @@
 
 namespace Citrax\Bundle\DatabaseSwiftMailerBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Citrax\Bundle\DatabaseSwiftMailerBundle\Entity\Email;
-use Citrax\Bundle\DatabaseSwiftMailerBundle\Form\EmailType;
 
 /**
  * Email controller.
@@ -17,13 +15,14 @@ use Citrax\Bundle\DatabaseSwiftMailerBundle\Form\EmailType;
  */
 class EmailController extends Controller
 {
-
     /**
      * Lists all Email entities.
      *
      * @Route("/{page}", name="email-spool", defaults={"page" = 1}, requirements={"page" = "\d+"})
      * @Method("GET")
      * @Template()
+     * @param $page
+     * @return array
      */
     public function indexAction($page)
     {
@@ -31,15 +30,16 @@ class EmailController extends Controller
 
         $query = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')->getAllEmails();
 
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query,
             $page/*page number*/,
             30/*limit per page*/
         );
-        return array(
+
+        return [
             'entities' => $pagination,
-        );
+        ];
     }
 
     /**
@@ -48,6 +48,8 @@ class EmailController extends Controller
      * @Route("/{id}/show", name="email-spool_show")
      * @Method("GET")
      * @Template()
+     * @param $id
+     * @return array
      */
     public function showAction($id)
     {
@@ -59,9 +61,9 @@ class EmailController extends Controller
             throw $this->createNotFoundException('Unable to find Email entity.');
         }
 
-        return array(
-            'entity'      => $entity,
-        );
+        return [
+            'entity' => $entity,
+        ];
     }
 
     /**
@@ -69,6 +71,8 @@ class EmailController extends Controller
      *
      * @Route("/{id}/retry", name="email-spool_retry")
      * @Method("GET")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function retryAction($id)
     {
@@ -94,6 +98,8 @@ class EmailController extends Controller
      *
      * @Route("/{id}/resend", name="email-spool_resend")
      * @Method("GET")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function resendAction($id)
     {
@@ -119,6 +125,8 @@ class EmailController extends Controller
      *
      * @Route("/{id}/cancel", name="email-spool_cancel")
      * @Method("GET")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function cancelAction($id)
     {
@@ -143,10 +151,11 @@ class EmailController extends Controller
      *
      * @Route("/{id}/delete", name="email-spool_delete")
      * @Method("GET")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction($id)
     {
-
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')->find($id);
 
@@ -157,8 +166,6 @@ class EmailController extends Controller
         $em->remove($entity);
         $em->flush();
 
-
         return $this->redirect($this->generateUrl('email-spool'));
     }
-
 }
