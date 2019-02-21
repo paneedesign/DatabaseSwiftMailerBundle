@@ -35,7 +35,6 @@ Register the bundle class and its dependencies in your AppKernel.php
     {
         $bundles = array(
         ...
-        new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
         new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         new Citrax\Bundle\DatabaseSwiftMailerBundle\CitraxDatabaseSwiftMailerBundle(),
         ...

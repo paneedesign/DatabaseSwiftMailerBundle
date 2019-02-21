@@ -16,8 +16,7 @@
   "require": {
     "php": ">=7.0",
     "symfony/swiftmailer-bundle": "~2.3",
-    "stof/doctrine-extensions-bundle": "~1.1@dev",
-    "knplabs/knp-paginator-bundle": "~2.4"
+    "stof/doctrine-extensions-bundle": "~1.1@dev"
   },
   "autoload": {
     "psr-4" : {

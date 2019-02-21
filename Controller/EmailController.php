@@ -28,17 +28,13 @@ class EmailController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')->getAllEmails();
+        $entities = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')->getAllEmails()->getResult();
 
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $query,
-            $page/*page number*/,
-            30/*limit per page*/
-        );
+        //TODO: add limit and pagination
 
         return [
-            'entities' => $pagination,
+            'entities' => $entities,
+            'page' => $page,
         ];
     }
 
