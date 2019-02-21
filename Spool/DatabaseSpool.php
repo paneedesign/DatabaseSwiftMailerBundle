@@ -8,13 +8,13 @@
 
 namespace Citrax\Bundle\DatabaseSwiftMailerBundle\Spool;
 
-
 use Citrax\Bundle\DatabaseSwiftMailerBundle\Entity\Email;
 use Citrax\Bundle\DatabaseSwiftMailerBundle\Entity\EmailRepository;
 use Swift_Mime_Message;
 use Swift_Transport;
 
-class DatabaseSpool extends \Swift_ConfigurableSpool {
+class DatabaseSpool extends \Swift_ConfigurableSpool
+{
     /**
      * @var EmailRepository
      */
@@ -27,7 +27,6 @@ class DatabaseSpool extends \Swift_ConfigurableSpool {
         $this->repository = $repository;
         $this->parameters = $parameters;
     }
-
 
     /**
      * Starts this Spool mechanism.
@@ -60,24 +59,24 @@ class DatabaseSpool extends \Swift_ConfigurableSpool {
      *
      * @param Swift_Mime_Message $message The message to store
      *
-     * @return bool    Whether the operation has succeeded
+     * @return bool Whether the operation has succeeded
      */
     public function queueMessage(Swift_Mime_Message $message)
     {
         $email = new Email();
-        $email->setFromEmail(implode('; ', array_keys($message->getFrom())) );
+        $email->setFromEmail(implode('; ', array_keys($message->getFrom())));
 
-        if($message->getTo() !== null ){
-            $email->setToEmail(implode('; ', array_keys($message->getTo())) );
+        if ($message->getTo() !== null) {
+            $email->setToEmail(implode('; ', array_keys($message->getTo())));
         }
-        if($message->getCc() !== null ){
-            $email->setCcEmail(implode('; ', array_keys($message->getCc())) );
+        if ($message->getCc() !== null) {
+            $email->setCcEmail(implode('; ', array_keys($message->getCc())));
         }
-        if($message->getBcc() !== null ){
-            $email->setBccEmail(implode('; ', array_keys($message->getBcc())) );
+        if ($message->getBcc() !== null) {
+            $email->setBccEmail(implode('; ', array_keys($message->getBcc())));
         }
-        if($message->getReplyTo() !== null ){
-            $email->setReplyToEmail(implode('; ', array_keys($message->getReplyTo())) );
+        if ($message->getReplyTo() !== null) {
+            $email->setReplyToEmail(implode('; ', array_keys($message->getReplyTo())));
         }
 
         $email->setBody($message->getBody());
@@ -85,38 +84,39 @@ class DatabaseSpool extends \Swift_ConfigurableSpool {
         $email->setMessage($message);
 
         $this->repository->addEmail($email);
+        return true;
     }
 
     /**
      * Sends messages using the given transport instance.
      *
-     * @param Swift_Transport $transport A transport instance
-     * @param string[] $failedRecipients An array of failures by-reference
+     * @param Swift_Transport $transport        A transport instance
+     * @param string[]        $failedRecipients An array of failures by-reference
      *
-     * @return int     The number of sent emails
+     * @return int The number of sent emails
      */
     public function flushQueue(Swift_Transport $transport, &$failedRecipients = null)
     {
-        if (!$transport->isStarted())
-        {
+        if (!$transport->isStarted()) {
             $transport->start();
         }
 
         $count = 0;
+        /** @var Email[] $emails */
         $emails = $this->repository->getEmailQueue($this->getMessageLimit());
 
-        foreach($emails as $email){
+        foreach ($emails as $email) {
             /*@var $message \Swift_Mime_Message */
             $message = $email->getMessage();
-            try{
-                $count_= $transport->send($message, $failedRecipients);
-                if($count_ > 0){
+            try {
+                $count_ = $transport->send($message, $failedRecipients);
+                if ($count_ > 0) {
                     $this->repository->markCompleteSending($email);
                     $count += $count_;
-                }else{
+                } else {
                     throw new \Swift_SwiftException('The email was not sent.');
                 }
-            }catch(\Swift_SwiftException $ex){
+            } catch (\Swift_SwiftException $ex) {
                 $this->repository->markFailedSending($email, $ex);
             }
         }
