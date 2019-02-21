@@ -3,7 +3,6 @@
 namespace Citrax\Bundle\DatabaseSwiftMailerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Email
@@ -101,7 +100,6 @@ class Email
     /**
      * @var \DateTime
      *
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
@@ -109,7 +107,6 @@ class Email
     /**
      * @var \DateTime
      *
-     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
@@ -117,7 +114,6 @@ class Email
     /**
      * @var string
      *
-     * @Gedmo\Blameable(on="create")
      * @ORM\Column(name="created_by", type="string", nullable=true)
      */
     private $createdBy;
@@ -125,7 +121,6 @@ class Email
     /**
      * @var string
      *
-     * @Gedmo\Blameable(on="update")
      * @ORM\Column(name="updated_by", type="string", nullable=true)
      */
     private $updatedBy;

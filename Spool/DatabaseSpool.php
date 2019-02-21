@@ -82,6 +82,7 @@ class DatabaseSpool extends \Swift_ConfigurableSpool
         $email->setBody($message->getBody());
         $email->setSubject($message->getSubject());
         $email->setMessage($message);
+        $email->setCreatedAt(new \DateTime());
 
         $this->repository->addEmail($email);
         return true;
