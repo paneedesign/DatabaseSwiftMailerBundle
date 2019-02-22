@@ -15,7 +15,7 @@ use Citrax\Bundle\DatabaseSwiftMailerBundle\Entity\Email;
  */
 class EmailController extends Controller
 {
-    const MAX_PAGE_ROWS = 2;
+    const MAX_PAGE_ROWS = 30;
 
     /**
      * Lists all Email entities.
