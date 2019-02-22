@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This bundle add a database driven swiftmailer spool to your symfony 2 project. It requires Symfony 2.4+ and usage of entities with Doctrine ORM.
+This bundle add a database driven swiftmailer spool to your Symfony 3 project. It requires Symfony 3.0+ and usage of entities with Doctrine ORM.
 
 ### Features
 
@@ -23,8 +23,8 @@ Add the dependency to your composer.json
 ```yml
     "require": {
         ...
-	    "dextervip/database-swiftmalier-bundle" : "dev-master"
-	}
+        "paneedesign/database-swiftmailer-bundle" : "dev-master"
+    }
 ```
 
 ### Add bundle class in kernel
@@ -59,7 +59,7 @@ citrax_database_swift_mailer:
 Update your database schema to create the necessary entities.
 
 ```sh
-$ php app/console doctrine:schema:update --force
+$ php bin/console doctrine:schema:update --force
 ```
 
 ### Update swiftmailer config
@@ -103,18 +103,12 @@ class EmailBundle extends Bundle
 4. All done!
 
 
-
-### Extra config
-
-??
-
-
 ## Running
 
 To send emails that are in the database spool, just run the following command: 
 
 ```sh
-$ php app/console swiftmailer:spool:send
+$ php bin/console swiftmailer:spool:send
 ```
 
 You may add a cron job entry to run it periodically.
@@ -122,7 +116,7 @@ You may add a cron job entry to run it periodically.
 You can check the spool status with all emails at http://your_project_url/email-spool
 
 
-## To Do's
+## ToDo List
 
 - Filter emails
 - Insert error message once it reaches the maximum of retries

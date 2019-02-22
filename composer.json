@@ -1,15 +1,20 @@
 {
   "name": "paneedesign/database-swiftmailer-bundle",
   "type": "library",
-  "description": "Database Spool Bundle for SwiftMailer and Symfony 2",
+  "description": "Database Spool Bundle for SwiftMailer and Symfony 3",
   "keywords": ["swiftmailer","database","symfony","bundle"],
-  "homepage": "https://github.com/dextervip/DatabaseSwiftMailerBundle",
+  "homepage": "https://github.com/paneedesign/DatabaseSwiftMailerBundle",
   "license": "MIT",
   "authors": [
     {
       "name": "Rafael Amorim",
       "email": "email@rafaelamorim.me",
       "homepage": "http://rafaelamorim.me",
+      "role": "Developer"
+    },
+    {
+      "name": "Luigi Cardamone",
+      "email": "luigi@paneedesign.com",
       "role": "Developer"
     }
   ],
