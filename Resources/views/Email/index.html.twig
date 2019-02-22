@@ -66,7 +66,17 @@
 
             <div class="text-center">
                 <div class="navigation">
-                    {# TODO: Add pagination #}
+                    {% if page > 1 %}
+                        <a href="{{ path('email-spool', { 'page': page - 1 }) }}">Prev</a>
+                    {% else %}
+                        Prev
+                    {% endif %}
+                    |
+                    {% if entities | length >= max_page_rows %}
+                        <a href="{{ path('email-spool', { 'page': page + 1 }) }}">Next</a>
+                    {% else %}
+                        Next
+                    {% endif %}
                 </div>
             </div>
 

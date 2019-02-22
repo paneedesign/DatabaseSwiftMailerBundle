@@ -22,11 +22,16 @@ class EmailRepository extends EntityRepository
         $em->flush();
     }
 
-    public function getAllEmails()
+    public function getAllEmails($limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('e');
 
-        $qb->addOrderBy('e.createdAt', 'DESC');
+        $qb
+            ->addOrderBy('e.createdAt', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+        ;
+
         return $qb->getQuery();
     }
 

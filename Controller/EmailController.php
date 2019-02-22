@@ -15,6 +15,8 @@ use Citrax\Bundle\DatabaseSwiftMailerBundle\Entity\Email;
  */
 class EmailController extends Controller
 {
+    const MAX_PAGE_ROWS = 2;
+
     /**
      * Lists all Email entities.
      *
@@ -28,13 +30,14 @@ class EmailController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')->getAllEmails()->getResult();
-
-        //TODO: add limit and pagination
+        $entities = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')
+            ->getAllEmails(EmailController::MAX_PAGE_ROWS, ($page - 1) * EmailController::MAX_PAGE_ROWS)
+            ->getResult();
 
         return [
             'entities' => $entities,
             'page' => $page,
+            'max_page_rows' => EmailController::MAX_PAGE_ROWS,
         ];
     }
 
