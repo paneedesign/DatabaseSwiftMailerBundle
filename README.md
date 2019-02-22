@@ -35,7 +35,7 @@ Register the bundle class and its dependencies in your AppKernel.php
     {
         $bundles = array(
         ...
-        new Citrax\Bundle\DatabaseSwiftMailerBundle\CitraxDatabaseSwiftMailerBundle(),
+        new PaneeDesign\DatabaseSwiftMailerBundle\PedDatabaseSwiftMailerBundle(),
         ...
         );
     }
@@ -46,8 +46,8 @@ Register the bundle class and its dependencies in your AppKernel.php
 If you want to have a spool dashboard, add the following routes.
 
 ```yml
-citrax_database_swift_mailer:
-    resource: "@CitraxDatabaseSwiftMailerBundle/Controller/"
+ped_database_swift_mailer:
+    resource: "@PedDatabaseSwiftMailerBundle/Controller/"
     type:     annotation
     prefix:   /
 ```
@@ -72,18 +72,18 @@ Change your spool type from memory to db in your config.yml
 
 ### Overriding default templates 
 
-You may want to override the default template to have the look and feel of your application. You can do it by creating a new bundle and defining its parent as CitraxDatabaseSwiftMailerBundle.
+You may want to override the default template to have the look and feel of your application. You can do it by creating a new bundle and defining its parent as PedDatabaseSwiftMailerBundle.
 
 1. Create a new empty bundle E.g. EmailBundle
 
-2. Edit its bundle class and add a getParent() method returning 'CitraxDatabaseSwiftMailerBundle'
+2. Edit its bundle class and add a getParent() method returning 'PedDatabaseSwiftMailerBundle'
 
 ```php
 class EmailBundle extends Bundle
 {
     public function getParent()
     {
-        return 'CitraxDatabaseSwiftMailerBundle';
+        return 'PedDatabaseSwiftMailerBundle';
     }
 }
 ```

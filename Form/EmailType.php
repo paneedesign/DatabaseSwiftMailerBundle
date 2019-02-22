@@ -1,6 +1,6 @@
 <?php
 
-namespace Citrax\Bundle\DatabaseSwiftMailerBundle\Form;
+namespace PaneeDesign\DatabaseSwiftMailerBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +27,7 @@ class EmailType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Citrax\Bundle\DatabaseSwiftMailerBundle\Entity\Email'
+            'data_class' => 'PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email'
         ));
     }
 
@@ -36,6 +36,6 @@ class EmailType extends AbstractType
      */
     public function getName()
     {
-        return 'citrax_bundle_databaseswiftmailerbundle_email';
+        return 'ped_bundle_databaseswiftmailerbundle_email';
     }
 }

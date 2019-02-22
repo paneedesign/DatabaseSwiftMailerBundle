@@ -24,7 +24,7 @@
   },
   "autoload": {
     "psr-4" : {
-      "Citrax\\Bundle\\DatabaseSwiftMailerBundle\\" : ""
+      "PaneeDesign\\DatabaseSwiftMailerBundle\\" : ""
     }
   }
 }

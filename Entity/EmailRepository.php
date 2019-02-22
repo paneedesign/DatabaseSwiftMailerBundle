@@ -1,6 +1,6 @@
 <?php
 
-namespace Citrax\Bundle\DatabaseSwiftMailerBundle\Entity;
+namespace PaneeDesign\DatabaseSwiftMailerBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -57,7 +57,7 @@ class EmailRepository extends EntityRepository
             foreach ($emails as $email) {
                 $ids[] = $email->getId();
             }
-            $query = $this->_em->createQuery("UPDATE CitraxDatabaseSwiftMailerBundle:Email e SET e.status = '" . Email::STATUS_PROCESSING . "' WHERE e.id IN (:ids)");
+            $query = $this->_em->createQuery("UPDATE PedDatabaseSwiftMailerBundle:Email e SET e.status = '" . Email::STATUS_PROCESSING . "' WHERE e.id IN (:ids)");
             $query->setParameter(':ids', $ids);
             $query->execute();
         }

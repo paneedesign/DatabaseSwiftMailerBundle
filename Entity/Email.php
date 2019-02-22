@@ -1,14 +1,14 @@
 <?php
 
-namespace Citrax\Bundle\DatabaseSwiftMailerBundle\Entity;
+namespace PaneeDesign\DatabaseSwiftMailerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Email
  *
- * @ORM\Table(name="citrax_email_spool")
- * @ORM\Entity(repositoryClass="Citrax\Bundle\DatabaseSwiftMailerBundle\Entity\EmailRepository")
+ * @ORM\Table(name="ped_email_spool")
+ * @ORM\Entity(repositoryClass="PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository")
  */
 class Email
 {

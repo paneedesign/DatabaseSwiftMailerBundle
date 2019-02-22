@@ -6,10 +6,10 @@
  * Time: 22:16
  */
 
-namespace Citrax\Bundle\DatabaseSwiftMailerBundle\Spool;
+namespace PaneeDesign\DatabaseSwiftMailerBundle\Spool;
 
-use Citrax\Bundle\DatabaseSwiftMailerBundle\Entity\Email;
-use Citrax\Bundle\DatabaseSwiftMailerBundle\Entity\EmailRepository;
+use PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email;
+use PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository;
 use Swift_Mime_Message;
 use Swift_Transport;
 

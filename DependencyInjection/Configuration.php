@@ -1,6 +1,6 @@
 <?php
 
-namespace Citrax\Bundle\DatabaseSwiftMailerBundle\DependencyInjection;
+namespace PaneeDesign\DatabaseSwiftMailerBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('citrax_database_swift_mailer');
+        $rootNode = $treeBuilder->root('ped_database_swift_mailer');
 
 
         $rootNode

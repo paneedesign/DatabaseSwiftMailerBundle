@@ -1,12 +1,12 @@
 <?php
 
-namespace Citrax\Bundle\DatabaseSwiftMailerBundle\Controller;
+namespace PaneeDesign\DatabaseSwiftMailerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Citrax\Bundle\DatabaseSwiftMailerBundle\Entity\Email;
+use PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email;
 
 /**
  * Email controller.
@@ -30,7 +30,7 @@ class EmailController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')
+        $entities = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')
             ->getAllEmails(EmailController::MAX_PAGE_ROWS, ($page - 1) * EmailController::MAX_PAGE_ROWS)
             ->getResult();
 
@@ -54,7 +54,7 @@ class EmailController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')->find($id);
+        $entity = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Email entity.');
@@ -78,7 +78,7 @@ class EmailController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')->find($id);
+        $entity = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Email entity.');
@@ -107,7 +107,7 @@ class EmailController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')->find($id);
+        $entity = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Email entity.');
@@ -136,7 +136,7 @@ class EmailController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')->find($id);
+        $entity = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Email entity.');
@@ -162,7 +162,7 @@ class EmailController extends Controller
     public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('CitraxDatabaseSwiftMailerBundle:Email')->find($id);
+        $entity = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Email entity.');

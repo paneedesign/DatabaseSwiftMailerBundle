@@ -1,6 +1,6 @@
 <?php
 
-namespace Citrax\Bundle\DatabaseSwiftMailerBundle\Tests\Controller;
+namespace PaneeDesign\DatabaseSwiftMailerBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -19,7 +19,7 @@ class EmailControllerTest extends WebTestCase
 
         // Fill in the form and submit it
         $form = $crawler->selectButton('Create')->form(array(
-            'citrax_bundle_databaseswiftmailerbundle_email[field_name]'  => 'Test',
+            'ped_bundle_databaseswiftmailerbundle_email[field_name]'  => 'Test',
             // ... other fields to fill
         ));
 
@@ -33,7 +33,7 @@ class EmailControllerTest extends WebTestCase
         $crawler = $client->click($crawler->selectLink('Edit')->link());
 
         $form = $crawler->selectButton('Update')->form(array(
-            'citrax_bundle_databaseswiftmailerbundle_email[field_name]'  => 'Foo',
+            'ped_bundle_databaseswiftmailerbundle_email[field_name]'  => 'Foo',
             // ... other fields to fill
         ));
 
