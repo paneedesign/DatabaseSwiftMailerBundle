@@ -17,6 +17,7 @@ class EmailRepository extends EntityRepository
         $em = $this->getEntityManager();
         $email->setStatus(Email::STATUS_READY);
         $email->setRetries(0);
+        $email->setCreatedAt(new \DateTime());
         $em->persist($email);
         $em->flush();
     }
@@ -44,6 +45,7 @@ class EmailRepository extends EntityRepository
             $qb->setMaxResults($limit);
         }
 
+        /** @var Email[] $emails */
         $emails = $qb->getQuery()->getResult();
         if (count($emails) > 0) {
             $ids = [];
@@ -62,7 +64,8 @@ class EmailRepository extends EntityRepository
     {
         $email->setErrorMessage($ex->getMessage());
         $email->setStatus(Email::STATUS_FAILED);
-        $email->setRetries($email->getRetries() + 1);
+        $email->setRetries(intval($email->getRetries()) + 1);
+        $email->setUpdatedAt(new \DateTime());
         $em = $this->getEntityManager();
         $em->persist($email);
         $em->flush();
@@ -73,6 +76,7 @@ class EmailRepository extends EntityRepository
         $email->setStatus(Email::STATUS_COMPLETE);
         $email->setSentAt(new \DateTime());
         $email->setErrorMessage('');
+        $email->setUpdatedAt(new \DateTime());
         $em = $this->getEntityManager();
         $em->persist($email);
         $em->flush();
