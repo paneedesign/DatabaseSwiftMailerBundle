@@ -16,8 +16,6 @@
                     <th>Retries</th>
                     <th>Created at</th>
                     <th>Updated at</th>
-                    <th>Created by</th>
-                    <th>Updated by</th>
                     <th>Sent at</th>
                     <th>Error message</th>
                     <th>Actions</th>
@@ -37,8 +35,6 @@
                         <td>{{ entity.retries }}</td>
                         <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                         <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                        <td>{{ entity.createdBy }}</td>
-                        <td>{{ entity.updatedBy }}</td>
                         <td>{% if entity.sentAt %}{{ entity.sentAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                         <td>{{ entity.errorMessage }}</td>
                         <td>

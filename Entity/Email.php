@@ -112,20 +112,6 @@ class Email
     private $updatedAt;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="created_by", type="string", nullable=true)
-     */
-    private $createdBy;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="updated_by", type="string", nullable=true)
-     */
-    private $updatedBy;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="sent_at", type="datetime", nullable=true)
@@ -351,38 +337,6 @@ class Email
     public function setSentAt($sentAt)
     {
         $this->sentAt = $sentAt;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * @param string $createdBy
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUpdatedBy()
-    {
-        return $this->updatedBy;
-    }
-
-    /**
-     * @param string $updatedBy
-     */
-    public function setUpdatedBy($updatedBy)
-    {
-        $this->updatedBy = $updatedBy;
     }
 
     /**
