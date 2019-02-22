@@ -72,6 +72,7 @@ class EmailController extends Controller
      * @Method("GET")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
      */
     public function retryAction($id)
     {
@@ -85,6 +86,7 @@ class EmailController extends Controller
 
         $entity->setStatus(Email::STATUS_FAILED);
         $entity->setRetries(0);
+        $entity->setUpdatedAt(new \DateTime());
 
         $em->persist($entity);
         $em->flush();
@@ -99,6 +101,7 @@ class EmailController extends Controller
      * @Method("GET")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
      */
     public function resendAction($id)
     {
@@ -112,6 +115,7 @@ class EmailController extends Controller
 
         $entity->setStatus(Email::STATUS_READY);
         $entity->setRetries(0);
+        $entity->setUpdatedAt(new \DateTime());
 
         $em->persist($entity);
         $em->flush();
@@ -126,6 +130,7 @@ class EmailController extends Controller
      * @Method("GET")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
      */
     public function cancelAction($id)
     {
@@ -138,6 +143,7 @@ class EmailController extends Controller
         }
 
         $entity->setStatus(Email::STATUS_CANCELLED);
+        $entity->setUpdatedAt(new \DateTime());
 
         $em->persist($entity);
         $em->flush();
