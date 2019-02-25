@@ -18,8 +18,20 @@ class EmailRepository extends EntityRepository
         $email->setStatus(Email::STATUS_READY);
         $email->setRetries(0);
         $email->setCreatedAt(new \DateTime());
+
+        $scheduledDbChanges = 0;
+        $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledEntityInsertions());
+        $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledEntityUpdates());
+        $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledEntityDeletions());
+        $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledCollectionUpdates());
+        $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledCollectionUpdates());
+
         $em->persist($email);
-        $em->flush();
+
+        // Flush only if there are not other db changes
+        if ($scheduledDbChanges === 0) {
+            $em->flush();
+        }
     }
 
     public function getAllEmails($limit = null, $offset = null)
