@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Controller;
 
 use DateTime;
+use Doctrine\ORM\EntityManager;
 use Exception;
 use PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email;
+use PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,12 +16,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Email controller.
- *
- * @Route("/email-spool")
  */
 class EmailController extends AbstractController
 {
     const MAX_PAGE_ROWS = 30;
+
+    /**
+     * @var EntityManager
+     */
+    private $manager;
+
+    /**
+     * @var EmailRepository
+     */
+    private $repository;
+
+    public function __construct(EntityManager $manager, EmailRepository $repository)
+    {
+        $this->manager = $manager;
+        $this->repository = $repository;
+    }
 
     /**
      * Lists all Email entities.
@@ -39,10 +55,7 @@ class EmailController extends AbstractController
      */
     public function indexAction($page)
     {
-        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
-        $em = $this->container->get($entityManagerName);
-
-        $entities = $em->getRepository(Email::class)
+        $entities = $this->repository
             ->getAllEmails(self::MAX_PAGE_ROWS, ($page - 1) * self::MAX_PAGE_ROWS)
             ->getResult();
 
@@ -65,10 +78,7 @@ class EmailController extends AbstractController
      */
     public function showAction($id)
     {
-        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
-        $em = $this->container->get($entityManagerName);
-
-        $entity = $em->getRepository(Email::class)->find($id);
+        $entity = $this->repository->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Email entity.');
@@ -92,11 +102,8 @@ class EmailController extends AbstractController
      */
     public function retryAction($id)
     {
-        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
-        $em = $this->container->get($entityManagerName);
-
         /* @var Email $entity */
-        $entity = $em->getRepository(Email::class)->find($id);
+        $entity = $this->repository->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Email entity.');
@@ -106,8 +113,8 @@ class EmailController extends AbstractController
         $entity->setRetries(0);
         $entity->setUpdatedAt(new DateTime());
 
-        $em->persist($entity);
-        $em->flush();
+        $this->manager->persist($entity);
+        $this->manager->flush();
 
         return $this->redirect($this->generateUrl('email-spool'));
     }
@@ -125,11 +132,8 @@ class EmailController extends AbstractController
      */
     public function resendAction($id)
     {
-        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
-        $em = $this->container->get($entityManagerName);
-
         /* @var Email $entity */
-        $entity = $em->getRepository(Email::class)->find($id);
+        $entity = $this->repository->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Email entity.');
@@ -139,8 +143,8 @@ class EmailController extends AbstractController
         $entity->setRetries(0);
         $entity->setUpdatedAt(new DateTime());
 
-        $em->persist($entity);
-        $em->flush();
+        $this->manager->persist($entity);
+        $this->manager->flush();
 
         return $this->redirect($this->generateUrl('email-spool'));
     }
@@ -158,11 +162,8 @@ class EmailController extends AbstractController
      */
     public function cancelAction($id)
     {
-        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
-        $em = $this->container->get($entityManagerName);
-
         /* @var Email $entity */
-        $entity = $em->getRepository(Email::class)->find($id);
+        $entity = $this->repository->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Email entity.');
@@ -171,8 +172,8 @@ class EmailController extends AbstractController
         $entity->setStatus(Email::STATUS_CANCELLED);
         $entity->setUpdatedAt(new DateTime());
 
-        $em->persist($entity);
-        $em->flush();
+        $this->manager->persist($entity);
+        $this->manager->flush();
 
         return $this->redirect($this->generateUrl('email-spool'));
     }
@@ -184,20 +185,21 @@ class EmailController extends AbstractController
      *
      * @param $id
      *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
      * @return RedirectResponse
      */
     public function deleteAction($id)
     {
-        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
-        $em = $this->container->get($entityManagerName);
-        $entity = $em->getRepository(Email::class)->find($id);
+        $entity = $this->repository->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Email entity.');
         }
 
-        $em->remove($entity);
-        $em->flush();
+        $this->manager->remove($entity);
+        $this->manager->flush();
 
         return $this->redirect($this->generateUrl('email-spool'));
     }

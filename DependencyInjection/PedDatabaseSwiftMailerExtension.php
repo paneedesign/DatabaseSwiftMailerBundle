@@ -18,6 +18,8 @@ class PedDatabaseSwiftMailerExtension extends Extension
 {
     /**
      * {@inheritdoc}
+     *
+     * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -28,6 +30,6 @@ class PedDatabaseSwiftMailerExtension extends Extension
         $container->setParameter('ped_database_swift_mailer.entity_manager', $config['entity_manager']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yml');
+        $loader->load('services.yaml');
     }
 }

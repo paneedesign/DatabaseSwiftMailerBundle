@@ -68,9 +68,10 @@ class EmailRepository extends EntityRepository
     /**
      * @param int $limit
      *
-     * @return Email[]
      * @throws ORMException
      * @throws OptimisticLockException
+     *
+     * @return Email[]
      */
     public function getEmailQueue($limit = 100)
     {

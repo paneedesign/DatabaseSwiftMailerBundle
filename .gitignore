@@ -8,6 +8,7 @@
 
 ###> composer ###
 composer.phar
+composer
 ###< composer ###
 
 ###> friendsofphp/php-cs-fixer ###

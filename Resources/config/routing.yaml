@@ -1,0 +1,7 @@
+ped_database_swift_mailer:
+    resource: "@PedDatabaseSwiftMailerBundle/Controller/"
+    type:     annotation
+    prefix:   /email-spool
+    options:
+        expose: true
+        i18n:   false
