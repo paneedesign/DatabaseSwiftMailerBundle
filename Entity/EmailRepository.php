@@ -12,6 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class EmailRepository extends EntityRepository
 {
+    private $autoFlush = true;
+
+    public function setAutoFlush($autoFlush)
+    {
+        $this->autoFlush = $autoFlush;
+    }
+
     public function addEmail(Email $email)
     {
         $em = $this->getEntityManager();
@@ -19,18 +26,23 @@ class EmailRepository extends EntityRepository
         $email->setRetries(0);
         $email->setCreatedAt(new \DateTime());
 
-        $scheduledDbChanges = 0;
-        $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledEntityInsertions());
-        $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledEntityUpdates());
-        $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledEntityDeletions());
-        $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledCollectionUpdates());
-        $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledCollectionUpdates());
-
-        $em->persist($email);
-
-        // Flush only if there are not other db changes
-        if ($scheduledDbChanges === 0) {
+        if ($this->autoFlush) {
+            $em->persist($email);
             $em->flush();
+        } else {
+            $scheduledDbChanges = 0;
+            $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledEntityInsertions());
+            $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledEntityUpdates());
+            $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledEntityDeletions());
+            $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledCollectionUpdates());
+            $scheduledDbChanges += count($em->getUnitOfWork()->getScheduledCollectionUpdates());
+
+            $em->persist($email);
+
+            // Flush only if there are not other db changes
+            if ($scheduledDbChanges === 0) {
+                $em->flush();
+            }
         }
     }
 

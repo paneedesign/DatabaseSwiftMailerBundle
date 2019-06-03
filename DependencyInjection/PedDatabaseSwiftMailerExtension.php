@@ -24,6 +24,7 @@ class PedDatabaseSwiftMailerExtension extends Extension
 
         $container->setParameter("ped_database_swift_mailer.params", $config);
         $container->setParameter("ped_database_swift_mailer.entity_manager", $config['entity_manager']);
+        $container->setParameter("ped_database_swift_mailer.auto_flush", $config['auto_flush']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

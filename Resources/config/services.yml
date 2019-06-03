@@ -3,6 +3,8 @@ services:
         class: PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository
         factory: ["@=service(container.getParameter('ped_database_swift_mailer.entity_manager'))",getRepository]
         arguments: ['PedDatabaseSwiftMailerBundle:Email']
+        calls:
+            - [setAutoFlush, ['%ped_database_swift_mailer.auto_flush%']]
     ped.database.swift_mailer.spool:
         class: PaneeDesign\DatabaseSwiftMailerBundle\Spool\DatabaseSpool
         arguments: ['@repository.email', '%ped_database_swift_mailer.params%']
