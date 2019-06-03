@@ -28,7 +28,8 @@ class EmailController extends Controller
      */
     public function indexAction($page)
     {
-        $em = $this->getDoctrine()->getManager();
+        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
+        $em = $this->container->get($entityManagerName);
 
         $entities = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')
             ->getAllEmails(EmailController::MAX_PAGE_ROWS, ($page - 1) * EmailController::MAX_PAGE_ROWS)
@@ -52,7 +53,8 @@ class EmailController extends Controller
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
+        $em = $this->container->get($entityManagerName);
 
         $entity = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')->find($id);
 
@@ -76,7 +78,8 @@ class EmailController extends Controller
      */
     public function retryAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
+        $em = $this->container->get($entityManagerName);
 
         $entity = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')->find($id);
 
@@ -105,7 +108,8 @@ class EmailController extends Controller
      */
     public function resendAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
+        $em = $this->container->get($entityManagerName);
 
         $entity = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')->find($id);
 
@@ -134,7 +138,8 @@ class EmailController extends Controller
      */
     public function cancelAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
+        $em = $this->container->get($entityManagerName);
 
         $entity = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')->find($id);
 
@@ -161,7 +166,8 @@ class EmailController extends Controller
      */
     public function deleteAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $entityManagerName = $this->container->getParameter('ped_database_swift_mailer.entity_manager');
+        $em = $this->container->get($entityManagerName);
         $entity = $em->getRepository('PedDatabaseSwiftMailerBundle:Email')->find($id);
 
         if (!$entity) {

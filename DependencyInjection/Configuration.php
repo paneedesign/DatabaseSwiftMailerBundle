@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode("max_retries")->defaultValue('10')->end()
             ->scalarNode("delete_sent_messages")->defaultFalse()->end()
+            ->scalarNode("entity_manager")->defaultValue('doctrine.orm.default_entity_manager')->end()
             ->end()
         ;
 
