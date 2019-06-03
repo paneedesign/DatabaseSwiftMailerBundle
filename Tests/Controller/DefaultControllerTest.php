@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
-    public function testIndex()
+    public function testIndex(): void
     {
         $client = static::createClient();
 

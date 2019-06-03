@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Swift_Message;
+use Swift_Mime_SimpleMessage;
 
 /**
- * Email
+ * Email.
  *
  * @ORM\Table(name="ped_email_spool")
  * @ORM\Entity(repositoryClass="PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository")
@@ -98,35 +103,35 @@ class Email
     private $retries;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="sent_at", type="datetime", nullable=true)
      */
     private $sentAt;
 
     /**
-     * @var \Swift_Message
+     * @var Swift_Message
      *
      * @ORM\Column(name="error_message", type="text", nullable=true)
      */
     private $errorMessage;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -136,7 +141,7 @@ class Email
     }
 
     /**
-     * Set subject
+     * Set subject.
      *
      * @param string $subject
      *
@@ -150,7 +155,7 @@ class Email
     }
 
     /**
-     * Get subject
+     * Get subject.
      *
      * @return string
      */
@@ -160,7 +165,7 @@ class Email
     }
 
     /**
-     * Set fromEmail
+     * Set fromEmail.
      *
      * @param string $fromEmail
      *
@@ -174,7 +179,7 @@ class Email
     }
 
     /**
-     * Get fromEmail
+     * Get fromEmail.
      *
      * @return string
      */
@@ -184,7 +189,7 @@ class Email
     }
 
     /**
-     * Set toEmail
+     * Set toEmail.
      *
      * @param string $toEmail
      *
@@ -198,7 +203,7 @@ class Email
     }
 
     /**
-     * Get toEmail
+     * Get toEmail.
      *
      * @return string
      */
@@ -218,7 +223,7 @@ class Email
     /**
      * @param string $ccEmail
      */
-    public function setCcEmail($ccEmail)
+    public function setCcEmail($ccEmail): void
     {
         $this->ccEmail = $ccEmail;
     }
@@ -234,7 +239,7 @@ class Email
     /**
      * @param string $bccEmail
      */
-    public function setBccEmail($bccEmail)
+    public function setBccEmail($bccEmail): void
     {
         $this->bccEmail = $bccEmail;
     }
@@ -270,13 +275,13 @@ class Email
     /**
      * @param string $body
      */
-    public function setBody($body)
+    public function setBody($body): void
     {
         $this->body = $body;
     }
 
     /**
-     * @return \Swift_Mime_Message
+     * @return Swift_Mime_SimpleMessage
      */
     public function getMessage()
     {
@@ -284,15 +289,15 @@ class Email
     }
 
     /**
-     * @param \Swift_Mime_Message $message
+     * @param Swift_Mime_SimpleMessage $message
      */
-    public function setMessage(\Swift_Mime_Message $message)
+    public function setMessage(Swift_Mime_SimpleMessage $message): void
     {
         $this->message = base64_encode(serialize($message));
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreatedAt()
     {
@@ -300,15 +305,15 @@ class Email
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt($createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getUpdatedAt()
     {
@@ -316,15 +321,15 @@ class Email
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getSentAt()
     {
@@ -332,15 +337,15 @@ class Email
     }
 
     /**
-     * @param \DateTime $sentAt
+     * @param DateTime $sentAt
      */
-    public function setSentAt($sentAt)
+    public function setSentAt($sentAt): void
     {
         $this->sentAt = $sentAt;
     }
 
     /**
-     * @return \Swift_Message
+     * @return Swift_Message
      */
     public function getErrorMessage()
     {
@@ -348,9 +353,9 @@ class Email
     }
 
     /**
-     * @param \Swift_Message $errorMessage
+     * @param string $errorMessage
      */
-    public function setErrorMessage($errorMessage)
+    public function setErrorMessage($errorMessage): void
     {
         $this->errorMessage = $errorMessage;
     }
@@ -366,7 +371,7 @@ class Email
     /**
      * @param string $status
      */
-    public function setStatus($status)
+    public function setStatus($status): void
     {
         $this->status = $status;
     }
@@ -382,7 +387,7 @@ class Email
     /**
      * @param string $retries
      */
-    public function setRetries($retries)
+    public function setRetries($retries): void
     {
         $this->retries = $retries;
     }

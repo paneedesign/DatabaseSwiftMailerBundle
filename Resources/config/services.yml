@@ -1,7 +1,7 @@
 services:
     repository.email:
         class: PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository
-        factory: ["@=service(container.getParameter('ped_database_swift_mailer.entity_manager'))",getRepository]
+        factory: ["@=service(container.getParameter('ped_database_swift_mailer.entity_manager'))", getRepository]
         arguments: ['PedDatabaseSwiftMailerBundle:Email']
     ped.database.swift_mailer.spool:
         class: PaneeDesign\DatabaseSwiftMailerBundle\Spool\DatabaseSpool

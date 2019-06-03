@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -10,25 +12,24 @@ class EmailType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('status')
             ->add('retries')
-            ->add('errorMessage')
-        ;
+            ->add('errorMessage');
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email',
+        ]);
     }
 
     /**

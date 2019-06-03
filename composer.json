@@ -1,30 +1,54 @@
 {
-  "name": "paneedesign/database-swiftmailer-bundle",
-  "type": "library",
-  "description": "Database Spool Bundle for SwiftMailer and Symfony 3",
-  "keywords": ["swiftmailer","database","symfony","bundle"],
-  "homepage": "https://github.com/paneedesign/DatabaseSwiftMailerBundle",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Rafael Amorim",
-      "email": "email@rafaelamorim.me",
-      "homepage": "http://rafaelamorim.me",
-      "role": "Developer"
+    "name": "paneedesign/database-swiftmailer-bundle",
+    "description": "Database Spool Bundle for SwiftMailer and Symfony 3+",
+    "version": "2.0.0-alpha",
+    "type": "library",
+    "keywords": ["swiftmailer", "database", "ped", "symfony", "bundle"],
+    "homepage": "https://github.com/paneedesign/DatabaseSwiftMailerBundle",
+    "readme": "README.md",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rafael Amorim",
+            "email": "email@rafaelamorim.me",
+            "homepage": "http://rafaelamorim.me",
+            "role": "Developer"
+        },
+        {
+            "name": "Luigi Cardamone",
+            "email": "luigi.cardamone@ped.technology",
+            "role": "Senior Back-end Developer"
+        },
+        {
+            "name": "Fabiano Roberto",
+            "email": "fabiano.roberto@ped.technology",
+            "role": "Senior Back-end Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2.0",
+        "doctrine/orm": "^2.6",
+        "sensio/framework-extra-bundle": "^5.0",
+        "symfony/form": "^4.2",
+        "symfony/swiftmailer-bundle": "^3.2"
     },
-    {
-      "name": "Luigi Cardamone",
-      "email": "luigi@paneedesign.com",
-      "role": "Developer"
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.14"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4" : {
+            "PaneeDesign\\DatabaseSwiftMailerBundle\\" : ""
+        }
+    },
+    "scripts": {
+        "beautify": [
+            "vendor/bin/php-cs-fixer fix --verbose --config=.php_cs.dist ."
+        ]
     }
-  ],
-  "require": {
-    "php": ">=7.0",
-    "symfony/swiftmailer-bundle": "~2.3"
-  },
-  "autoload": {
-    "psr-4" : {
-      "PaneeDesign\\DatabaseSwiftMailerBundle\\" : ""
-    }
-  }
 }

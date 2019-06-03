@@ -1,19 +1,25 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: Rafael
  * Date: 02/05/2015
- * Time: 22:16
+ * Time: 22:16.
  */
 
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Spool;
 
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email;
 use PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository;
-use Swift_Mime_Message;
+use Swift_ConfigurableSpool;
+use Swift_Mime_SimpleMessage;
+use Swift_SwiftException;
 use Swift_Transport;
 
-class DatabaseSpool extends \Swift_ConfigurableSpool
+class DatabaseSpool extends Swift_ConfigurableSpool
 {
     /**
      * @var EmailRepository
@@ -31,7 +37,7 @@ class DatabaseSpool extends \Swift_ConfigurableSpool
     /**
      * Starts this Spool mechanism.
      */
-    public function start()
+    public function start(): void
     {
         // TODO: Implement start() method.
     }
@@ -39,7 +45,7 @@ class DatabaseSpool extends \Swift_ConfigurableSpool
     /**
      * Stops this Spool mechanism.
      */
-    public function stop()
+    public function stop(): void
     {
         // TODO: Implement stop() method.
     }
@@ -57,26 +63,29 @@ class DatabaseSpool extends \Swift_ConfigurableSpool
     /**
      * Queues a message.
      *
-     * @param Swift_Mime_Message $message The message to store
+     * @param Swift_Mime_SimpleMessage $message The message to store
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @return bool Whether the operation has succeeded
      */
-    public function queueMessage(Swift_Mime_Message $message)
+    public function queueMessage(Swift_Mime_SimpleMessage $message)
     {
         $email = new Email();
         $email->setFromEmail(implode('; ', array_keys($message->getFrom())));
 
-        if ($message->getTo() !== null) {
+        if (null !== $message->getTo()) {
             $email->setToEmail(implode('; ', array_keys($message->getTo())));
         }
-        if ($message->getCc() !== null) {
+        if (null !== $message->getCc()) {
             $email->setCcEmail(implode('; ', array_keys($message->getCc())));
         }
-        if ($message->getBcc() !== null) {
+        if (null !== $message->getBcc()) {
             $email->setBccEmail(implode('; ', array_keys($message->getBcc())));
         }
-        if ($message->getReplyTo() !== null) {
-            $email->setReplyToEmail(implode('; ', array_keys($message->getReplyTo())));
+        if (null !== $message->getReplyTo()) {
+            $email->setReplyToEmail($message->getReplyTo());
         }
 
         $email->setBody($message->getBody());
@@ -84,6 +93,7 @@ class DatabaseSpool extends \Swift_ConfigurableSpool
         $email->setMessage($message);
 
         $this->repository->addEmail($email);
+
         return true;
     }
 
@@ -93,7 +103,10 @@ class DatabaseSpool extends \Swift_ConfigurableSpool
      * @param Swift_Transport $transport        A transport instance
      * @param string[]        $failedRecipients An array of failures by-reference
      *
-     * @return int The number of sent emails
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @return int The number of sent e-mail's
      */
     public function flushQueue(Swift_Transport $transport, &$failedRecipients = null)
     {
@@ -102,21 +115,23 @@ class DatabaseSpool extends \Swift_ConfigurableSpool
         }
 
         $count = 0;
+
         /** @var Email[] $emails */
         $emails = $this->repository->getEmailQueue($this->getMessageLimit());
 
         foreach ($emails as $email) {
-            /*@var $message \Swift_Mime_Message */
+            /* @var Swift_Mime_SimpleMessage $message */
             $message = $email->getMessage();
+
             try {
                 $count_ = $transport->send($message, $failedRecipients);
                 if ($count_ > 0) {
                     $this->repository->markCompleteSending($email);
                     $count += $count_;
                 } else {
-                    throw new \Swift_SwiftException('The email was not sent.');
+                    throw new Swift_SwiftException('The email was not sent.');
                 }
-            } catch (\Swift_SwiftException $ex) {
+            } catch (Swift_SwiftException $ex) {
                 $this->repository->markFailedSending($email, $ex);
             }
         }
