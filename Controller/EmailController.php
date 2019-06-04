@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManager;
 use Exception;
 use PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email;
 use PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,11 +46,10 @@ class EmailController extends AbstractController
      *     requirements={"page" = "\d+"},
      *     methods={"GET"}
      * )
-     * @Template
      *
      * @param $page
      *
-     * @return array
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction($page)
     {
@@ -59,22 +57,21 @@ class EmailController extends AbstractController
             ->getAllEmails(self::MAX_PAGE_ROWS, ($page - 1) * self::MAX_PAGE_ROWS)
             ->getResult();
 
-        return [
+        return $this->render('PedDatabaseSwiftMailerBundle:Email:index.html.twig', [
             'entities' => $entities,
             'page' => $page,
             'max_page_rows' => self::MAX_PAGE_ROWS,
-        ];
+        ]);
     }
 
     /**
      * Finds and displays a Email entity.
      *
      * @Route("/{id}/show", name="email-spool_show", methods={"GET"})
-     * @Template
      *
      * @param $id
      *
-     * @return array
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction($id)
     {
@@ -84,9 +81,9 @@ class EmailController extends AbstractController
             throw $this->createNotFoundException('Unable to find Email entity.');
         }
 
-        return [
+        return $this->render('PedDatabaseSwiftMailerBundle:Email:show.html.twig', [
             'entity' => $entity,
-        ];
+        ]);
     }
 
     /**
