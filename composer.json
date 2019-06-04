@@ -1,7 +1,6 @@
 {
     "name": "paneedesign/database-swiftmailer-bundle",
     "description": "Database Spool Bundle for SwiftMailer and Symfony 3+",
-    "version": "2.0.0-alpha",
     "type": "library",
     "keywords": ["swiftmailer", "database", "ped", "symfony", "bundle"],
     "homepage": "https://github.com/paneedesign/DatabaseSwiftMailerBundle",
