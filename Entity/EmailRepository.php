@@ -29,7 +29,6 @@ class EmailRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $email->setStatus(Email::STATUS_READY);
-        $email->setRetries(0);
         $email->setCreatedAt(new DateTime());
 
         $scheduledDbChanges = 0;
@@ -67,19 +66,23 @@ class EmailRepository extends EntityRepository
 
     /**
      * @param int $limit
+     * @param int $maxRetries
      *
      * @throws ORMException
      * @throws OptimisticLockException
      *
      * @return Email[]
      */
-    public function getEmailQueue($limit = 100)
+    public function getEmailQueue($limit = 100, $maxRetries = 10)
     {
         $qb = $this->createQueryBuilder('e');
 
-        $qb->where($qb->expr()->eq('e.status', ':status'))->setParameter(':status', Email::STATUS_READY);
-        $qb->orWhere($qb->expr()->eq('e.status', ':status_1'))->setParameter(':status_1', Email::STATUS_FAILED);
-        $qb->andWhere($qb->expr()->lt('e.retries', ':retries'))->setParameter(':retries', 10);
+        $qb->where($qb->expr()->in('e.status', ':status'));
+        $qb->andWhere($qb->expr()->lt('e.retries', ':retries'));
+        $qb->setParameters([
+            'status' => [Email::STATUS_READY, Email::STATUS_FAILED],
+            'retries' => $maxRetries,
+        ]);
 
         $qb->addOrderBy('e.retries', 'ASC');
         $qb->addOrderBy('e.createdAt', 'ASC');
@@ -137,8 +140,22 @@ class EmailRepository extends EntityRepository
         $email->setSentAt(new DateTime());
         $email->setErrorMessage(null);
         $email->setUpdatedAt(new DateTime());
+
         $em = $this->getEntityManager();
         $em->persist($email);
+        $em->flush();
+    }
+
+    /**
+     * @param Email $email
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function deleteSentMessages(Email $email): void
+    {
+        $em = $this->getEntityManager();
+        $em->remove($email);
         $em->flush();
     }
 }

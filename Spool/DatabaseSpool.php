@@ -117,7 +117,7 @@ class DatabaseSpool extends Swift_ConfigurableSpool
         $count = 0;
 
         /** @var Email[] $emails */
-        $emails = $this->repository->getEmailQueue($this->getMessageLimit());
+        $emails = $this->repository->getEmailQueue($this->getMessageLimit(), $this->parameters['max_retries']);
 
         foreach ($emails as $email) {
             /* @var Swift_Mime_SimpleMessage $message */
@@ -125,8 +125,14 @@ class DatabaseSpool extends Swift_ConfigurableSpool
 
             try {
                 $count_ = $transport->send($message, $failedRecipients);
+
                 if ($count_ > 0) {
-                    $this->repository->markCompleteSending($email);
+                    if ($this->parameters['delete_sent_messages']) {
+                        $this->repository->deleteSentMessages($email);
+                    } else {
+                        $this->repository->markCompleteSending($email);
+                    }
+
                     $count += $count_;
                 } else {
                     throw new Swift_SwiftException('The email was not sent.');

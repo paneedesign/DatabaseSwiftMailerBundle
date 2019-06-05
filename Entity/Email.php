@@ -96,11 +96,11 @@ class Email
     private $status;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="retries", type="integer")
+     * @ORM\Column(name="retries", type="integer", options={"default" = 0})
      */
-    private $retries;
+    private $retries = 0;
 
     /**
      * @var DateTime
@@ -377,7 +377,7 @@ class Email
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getRetries()
     {
@@ -385,9 +385,9 @@ class Email
     }
 
     /**
-     * @param string $retries
+     * @param int $retries
      */
-    public function setRetries($retries): void
+    public function setRetries(int $retries): void
     {
         $this->retries = $retries;
     }
