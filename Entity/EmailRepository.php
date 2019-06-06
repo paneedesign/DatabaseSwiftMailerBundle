@@ -21,11 +21,12 @@ class EmailRepository extends EntityRepository
 {
     /**
      * @param Email $email
+     * @param bool|null $autoFlush
      *
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function addEmail(Email $email): void
+    public function addEmail(Email $email, ?bool $autoFlush = true): void
     {
         $em = $this->getEntityManager();
         $email->setStatus(Email::STATUS_READY);

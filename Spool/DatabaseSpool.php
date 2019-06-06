@@ -92,7 +92,7 @@ class DatabaseSpool extends Swift_ConfigurableSpool
         $email->setSubject($message->getSubject());
         $email->setMessage($message);
 
-        $this->repository->addEmail($email);
+        $this->repository->addEmail($email, $this->parameters['auto_flush']);
 
         return true;
     }
