@@ -13,7 +13,7 @@ namespace PaneeDesign\DatabaseSwiftMailerBundle\Spool;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email;
-use PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository;
+use PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepositoryInterface;
 use Swift_ConfigurableSpool;
 use Swift_Mime_SimpleMessage;
 use Swift_SwiftException;
@@ -22,13 +22,13 @@ use Swift_Transport;
 class DatabaseSpool extends Swift_ConfigurableSpool
 {
     /**
-     * @var EmailRepository
+     * @var EmailRepositoryInterface
      */
     private $repository;
 
     private $parameters;
 
-    public function __construct(EmailRepository $repository, $parameters)
+    public function __construct(EmailRepositoryInterface $repository, array $parameters)
     {
         $this->repository = $repository;
         $this->parameters = $parameters;

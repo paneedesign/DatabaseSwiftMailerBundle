@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Controller;
 
 use DateTime;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email;
-use PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository;
+use PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository;
+use PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,21 +20,21 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EmailController extends AbstractController
 {
-    const MAX_PAGE_ROWS = 30;
+    public const MAX_PAGE_ROWS = 30;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
-    private $manager;
+    private $emailManager;
 
     /**
      * @var EmailRepository
      */
     private $repository;
 
-    public function __construct(EntityManager $manager, EmailRepository $repository)
+    public function __construct(EntityManagerInterface $emailManager, EmailRepositoryInterface $repository)
     {
-        $this->manager = $manager;
+        $this->manager = $emailManager;
         $this->repository = $repository;
     }
 
@@ -49,7 +51,7 @@ class EmailController extends AbstractController
      *
      * @param $page
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction($page)
     {
@@ -57,7 +59,7 @@ class EmailController extends AbstractController
             ->getAllEmails(self::MAX_PAGE_ROWS, ($page - 1) * self::MAX_PAGE_ROWS)
             ->getResult();
 
-        return $this->render('PedDatabaseSwiftMailerBundle:Email:index.html.twig', [
+        return $this->render(':Email:index.html.twig', [
             'entities' => $entities,
             'page' => $page,
             'max_page_rows' => self::MAX_PAGE_ROWS,
@@ -71,7 +73,7 @@ class EmailController extends AbstractController
      *
      * @param $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction($id)
     {
@@ -81,7 +83,7 @@ class EmailController extends AbstractController
             throw $this->createNotFoundException('Unable to find Email entity.');
         }
 
-        return $this->render('PedDatabaseSwiftMailerBundle:Email:show.html.twig', [
+        return $this->render(':Email:show.html.twig', [
             'entity' => $entity,
         ]);
     }
@@ -181,9 +183,6 @@ class EmailController extends AbstractController
      * @Route("/{id}/delete", name="email-spool_delete", methods={"GET"})
      *
      * @param $id
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @return RedirectResponse
      */

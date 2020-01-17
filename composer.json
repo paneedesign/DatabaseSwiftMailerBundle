@@ -26,13 +26,13 @@
     ],
     "require": {
         "php": "^7.2.0",
-        "doctrine/orm": "^2.6",
-        "sensio/framework-extra-bundle": "^5.0",
-        "symfony/form": "^4.2",
-        "symfony/swiftmailer-bundle": "^3.2"
+        "symfony/framework-bundle": "^4.2|^5.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.14"
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpunit/phpunit": "^8.5",
+        "symfony/form": "^4.2|^5.0",
+        "symfony/swiftmailer-bundle": "^3.2"
     },
     "config": {
         "preferred-install": {
@@ -41,13 +41,26 @@
         "sort-packages": true
     },
     "autoload": {
-        "psr-4" : {
-            "PaneeDesign\\DatabaseSwiftMailerBundle\\" : ""
+        "psr-4": {
+            "PaneeDesign\\DatabaseSwiftMailerBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PaneeDesign\\DatabaseSwiftMailerBundle\\Tests\\": "tests/"
         }
     },
     "scripts": {
         "beautify": [
-            "vendor/bin/php-cs-fixer fix --verbose --config=.php_cs.dist ."
+            "vendor/bin/php-cs-fixer fix --verbose --config=.php_cs.dist src"
         ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0.x-dev"
+        }
     }
 }

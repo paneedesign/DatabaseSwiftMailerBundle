@@ -13,15 +13,15 @@ use Swift_Mime_SimpleMessage;
  * Email.
  *
  * @ORM\Table(name="ped_email_spool")
- * @ORM\Entity(repositoryClass="PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository")
+ * @ORM\Entity(repositoryClass="PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository")
  */
 class Email
 {
-    const STATUS_FAILED = 'FAILED';
-    const STATUS_READY = 'READY';
-    const STATUS_PROCESSING = 'PROCESSING';
-    const STATUS_COMPLETE = 'COMPLETE';
-    const STATUS_CANCELLED = 'CANCELLED';
+    public const STATUS_FAILED = 'FAILED';
+    public const STATUS_READY = 'READY';
+    public const STATUS_PROCESSING = 'PROCESSING';
+    public const STATUS_COMPLETE = 'COMPLETE';
+    public const STATUS_CANCELLED = 'CANCELLED';
 
     /**
      * @var int
@@ -288,9 +288,6 @@ class Email
         return unserialize(base64_decode($this->message));
     }
 
-    /**
-     * @param Swift_Mime_SimpleMessage $message
-     */
     public function setMessage(Swift_Mime_SimpleMessage $message): void
     {
         $this->message = base64_encode(serialize($message));
@@ -384,9 +381,6 @@ class Email
         return $this->retries;
     }
 
-    /**
-     * @param int $retries
-     */
     public function setRetries(int $retries): void
     {
         $this->retries = $retries;
