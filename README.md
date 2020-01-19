@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This bundle add a database driven swiftmailer spool to your Symfony 3 project. It requires Symfony 3.0+ and usage of entities with Doctrine ORM.
+This bundle add a database driven swiftmailer spool to your Symfony 4 project. It requires Symfony 4.2+ and usage of entities with Doctrine ORM.
 
 ### Features
 
@@ -73,7 +73,7 @@ Change your spool type from memory to db in your config.yml
 ### Overriding default templates 
 
 You may want to override the default template to have the look and feel of your application. You can do it following the official Symfony documentation:
-https://symfony.com/doc/3.4/templating/overriding.html
+https://symfony.com/doc/current/bundles/override.html
 
 ## Running
 

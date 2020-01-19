@@ -21,18 +21,20 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('ped_database_swift_mailer');
 
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->getRootNode();
-        } else {
-            // BC layer for symfony/config 4.1 and older
-            $rootNode = $treeBuilder->getRootNode();
-        }
-
-        $rootNode
+        $treeBuilder
+            ->getRootNode()
             ->children()
-            ->scalarNode('max_retries')->defaultValue('10')->end()
-            ->scalarNode('delete_sent_messages')->defaultFalse()->end()
-            ->scalarNode('entity_manager')->defaultValue('doctrine.orm.default_entity_manager')->end()
+                ->integerNode('max_retries')
+                    ->info('Set a maximum number of retries that spool will try to send in case of failure')
+                    ->defaultValue(10)
+                ->end()
+                ->booleanNode('delete_sent_messages')
+                    ->info('Delete messages after send')
+                    ->defaultFalse()
+                ->end()
+                ->booleanNode('auto_flush')
+                    ->defaultTrue()
+                ->end()
             ->end();
 
         return $treeBuilder;

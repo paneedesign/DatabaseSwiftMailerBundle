@@ -1,7 +1,0 @@
-ped_database_swift_mailer:
-    resource: PaneeDesign\DatabaseSwiftMailerBundle\Controller\EmailController
-    type:     annotation
-    prefix:   /email-spool
-    options:
-        expose: true
-        i18n:   false

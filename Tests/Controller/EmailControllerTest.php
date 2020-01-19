@@ -15,14 +15,14 @@ class EmailControllerTest extends WebTestCase
 
         // Create a new entry in the database
         $crawler = $client->request('GET', '/email-spool/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /email-spool/");
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Unexpected HTTP status code for GET /email-spool/');
         $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
 
         // Fill in the form and submit it
-        $form = $crawler->selectButton('Create')->form(array(
-            'ped_bundle_databaseswiftmailerbundle_email[field_name]'  => 'Test',
+        $form = $crawler->selectButton('Create')->form([
+            'ped_bundle_databaseswiftmailerbundle_email[field_name]' => 'Test',
             // ... other fields to fill
-        ));
+        ]);
 
         $client->submit($form);
         $crawler = $client->followRedirect();
@@ -33,10 +33,10 @@ class EmailControllerTest extends WebTestCase
         // Edit the entity
         $crawler = $client->click($crawler->selectLink('Edit')->link());
 
-        $form = $crawler->selectButton('Update')->form(array(
-            'ped_bundle_databaseswiftmailerbundle_email[field_name]'  => 'Foo',
+        $form = $crawler->selectButton('Update')->form([
+            'ped_bundle_databaseswiftmailerbundle_email[field_name]' => 'Foo',
             // ... other fields to fill
-        ));
+        ]);
 
         $client->submit($form);
         $crawler = $client->followRedirect();

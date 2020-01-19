@@ -6,11 +6,12 @@ namespace PaneeDesign\DatabaseSwiftMailerBundle\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Swift_Message;
 use Swift_Mime_SimpleMessage;
 
 /**
- * Email.
+ * Class Email.
  *
  * @ORM\Table(name="ped_email_spool")
  * @ORM\Entity(repositoryClass="PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository")
@@ -26,8 +27,8 @@ class Email
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -129,6 +130,16 @@ class Email
      * @ORM\Column(name="error_message", type="text", nullable=true)
      */
     private $errorMessage;
+
+    /**
+     * Email constructor.
+     *
+     * @throws Exception
+     */
+    public function __construct()
+    {
+        $this->createdAt = new DateTime();
+    }
 
     /**
      * Get id.

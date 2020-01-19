@@ -29,6 +29,8 @@
         "symfony/framework-bundle": "^4.2|^5.0"
     },
     "require-dev": {
+        "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/orm": "^2.7",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpunit/phpunit": "^8.5",
         "symfony/form": "^4.2|^5.0",
@@ -42,17 +44,17 @@
     },
     "autoload": {
         "psr-4": {
-            "PaneeDesign\\DatabaseSwiftMailerBundle\\": "src/"
+            "PaneeDesign\\DatabaseSwiftMailerBundle\\": ""
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "PaneeDesign\\DatabaseSwiftMailerBundle\\Tests\\": "tests/"
+            "PaneeDesign\\DatabaseSwiftMailerBundle\\Tests\\": "Tests/"
         }
     },
     "scripts": {
         "beautify": [
-            "vendor/bin/php-cs-fixer fix --verbose --config=.php_cs.dist src"
+            "vendor/bin/php-cs-fixer fix --verbose --config=.php_cs.dist ."
         ]
     },
     "conflict": {

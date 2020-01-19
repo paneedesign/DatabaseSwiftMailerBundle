@@ -1,0 +1,21 @@
+services:
+    PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository:
+        arguments: ['@doctrine']
+        tags: ['doctrine.repository_service']
+
+    PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepositoryInterface: '@PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository'
+
+    PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailService:
+        arguments:
+            #$emailManager: "@=service(container.getParameter('ped_database_swift_mailer.entity_manager'))"
+            $emailManager: "@doctrine.orm.entity_manager"
+
+    PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface: '@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailService'
+
+    ped.database.swift_mailer.spool:
+        class: PaneeDesign\DatabaseSwiftMailerBundle\Spool\DatabaseSpool
+        arguments: ['@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface']
+
+    PaneeDesign\DatabaseSwiftMailerBundle\Controller\EmailController:
+        arguments: ['@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface']
+        tags: ['controller.service_arguments']
