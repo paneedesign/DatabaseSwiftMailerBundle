@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Controller;
 
 use Exception;
+use PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email;
 use PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Webmozart\Assert\Assert;
 
 /**
  * Email controller.
@@ -77,12 +77,8 @@ class EmailController extends AbstractController
      *
      * @return Response
      */
-    public function showAction($id)
+    public function showAction(Email $email)
     {
-        Assert::integer($id);
-
-        $email = $this->emailService->getById($id);
-
         return $this->render('PedDatabaseSwiftMailerBundle:Email:show.html.twig', [
             'entity' => $email,
         ]);
@@ -99,11 +95,9 @@ class EmailController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function retryAction($id)
+    public function retryAction(Email $email)
     {
-        Assert::integer($id);
-
-        $this->emailService->retryById($id);
+        $this->emailService->retry($email);
 
         return $this->redirectToRoute('email-spool');
     }
@@ -119,9 +113,9 @@ class EmailController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function resendAction($id)
+    public function resendAction(Email $email)
     {
-        $this->emailService->resendById($id);
+        $this->emailService->resend($email);
 
         return $this->redirectToRoute('email-spool');
     }
@@ -137,11 +131,9 @@ class EmailController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function cancelAction($id)
+    public function cancelAction(Email $email)
     {
-        Assert::integer($id);
-
-        $this->emailService->cancelById($id);
+        $this->emailService->cancel($email);
 
         return $this->redirectToRoute('email-spool');
     }
@@ -155,11 +147,9 @@ class EmailController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function deleteAction($id)
+    public function deleteAction(Email $email)
     {
-        Assert::integer($id);
-
-        $this->emailService->deleteById($id);
+        $this->emailService->delete($email);
 
         return $this->redirectToRoute('email-spool');
     }

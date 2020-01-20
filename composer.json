@@ -25,10 +25,10 @@
         }
     ],
     "require": {
-        "php": "^7.2.0",
-        "webmozart/assert": "^1.0"
+        "php": "^7.2.0"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.8",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.7",
         "friendsofphp/php-cs-fixer": "^2.16",

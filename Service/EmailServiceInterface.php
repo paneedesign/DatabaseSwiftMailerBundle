@@ -22,9 +22,15 @@ interface EmailServiceInterface
 
     public function retryById(int $id): void;
 
+    public function retry(Email $email): void;
+
     public function resendById(int $id): void;
 
+    public function resend(Email $email): void;
+
     public function cancelById(int $id): void;
+
+    public function cancel(Email $email): void;
 
     public function deleteById(int $id): void;
 

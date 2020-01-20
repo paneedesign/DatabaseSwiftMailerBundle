@@ -143,7 +143,11 @@ class EmailService implements EmailServiceInterface
      */
     public function retryById(int $id): void
     {
-        $email = $this->getById($id);
+        $this->retry($this->getById($id));
+    }
+
+    public function retry(Email $email): void
+    {
         $email->setStatus(Email::STATUS_FAILED);
         $email->setRetries(0);
         $email->setUpdatedAt(new DateTime());
@@ -157,7 +161,11 @@ class EmailService implements EmailServiceInterface
      */
     public function resendById(int $id): void
     {
-        $email = $this->getById($id);
+        $this->resend($this->getById($id));
+    }
+
+    public function resend(Email $email): void
+    {
         $email->setStatus(Email::STATUS_READY);
         $email->setRetries(0);
         $email->setUpdatedAt(new DateTime());
@@ -171,7 +179,11 @@ class EmailService implements EmailServiceInterface
      */
     public function cancelById(int $id): void
     {
-        $email = $this->getById($id);
+        $this->cancel($this->getById($id));
+    }
+
+    public function cancel(Email $email): void
+    {
         $email->setStatus(Email::STATUS_CANCELLED);
         $email->setUpdatedAt(new DateTime());
 
