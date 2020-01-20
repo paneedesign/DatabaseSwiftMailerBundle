@@ -25,11 +25,11 @@ class PedDatabaseSwiftMailerExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $configuration = new Configuration();
-        $parameters = $this->processConfiguration($configuration, $configs);
-
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
+
+        $configuration = new Configuration();
+        $parameters = $this->processConfiguration($configuration, $configs);
 
         $spool = $container->getDefinition('ped.database.swift_mailer.spool');
         $spool->setArgument(1, $parameters);

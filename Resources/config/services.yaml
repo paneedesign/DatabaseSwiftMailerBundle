@@ -7,8 +7,7 @@ services:
 
     PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailService:
         arguments:
-            #$emailManager: "@=service(container.getParameter('ped_database_swift_mailer.entity_manager'))"
-            $emailManager: "@doctrine.orm.entity_manager"
+            $emailManager: '@=service(container.hasParameter("ped_database_swift_mailer.entity_manager") ? parameter("ped_database_swift_mailer.entity_manager") : "doctrine.orm.default_entity_manager")'
 
     PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface: '@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailService'
 

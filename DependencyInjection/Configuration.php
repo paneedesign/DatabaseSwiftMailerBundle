@@ -24,6 +24,10 @@ class Configuration implements ConfigurationInterface
         $treeBuilder
             ->getRootNode()
             ->children()
+                ->scalarNode('entity_manager')
+                    ->info('Custom entity manager')
+                    ->defaultValue('doctrine.orm.default_entity_manager')
+                ->end()
                 ->integerNode('max_retries')
                     ->info('Set a maximum number of retries that spool will try to send in case of failure')
                     ->defaultValue(10)
