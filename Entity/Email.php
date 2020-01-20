@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Entity;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
-use Swift_Message;
 use Swift_Mime_SimpleMessage;
 
 /**
- * Class Email.
- *
  * @ORM\Table(name="ped_email_spool")
  * @ORM\Entity(repositoryClass="PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository")
  */
@@ -104,28 +102,28 @@ class Email
     private $retries = 0;
 
     /**
-     * @var DateTime
+     * @var DateTimeInterface
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
 
     /**
-     * @var DateTime
+     * @var DateTimeInterface
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 
     /**
-     * @var DateTime
+     * @var DateTimeInterface
      *
      * @ORM\Column(name="sent_at", type="datetime", nullable=true)
      */
     private $sentAt;
 
     /**
-     * @var Swift_Message
+     * @var string
      *
      * @ORM\Column(name="error_message", type="text", nullable=true)
      */
@@ -304,74 +302,47 @@ class Email
         $this->message = base64_encode(serialize($message));
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param DateTime $createdAt
-     */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt(DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param DateTime $updatedAt
-     */
-    public function setUpdatedAt($updatedAt): void
+    public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getSentAt()
+    public function getSentAt(): ?DateTimeInterface
     {
         return $this->sentAt;
     }
 
-    /**
-     * @param DateTime $sentAt
-     */
-    public function setSentAt($sentAt): void
+    public function setSentAt(DateTimeInterface $sentAt): void
     {
         $this->sentAt = $sentAt;
     }
 
-    /**
-     * @return Swift_Message
-     */
-    public function getErrorMessage()
+    public function getErrorMessage(): ?string
     {
         return $this->errorMessage;
     }
 
-    /**
-     * @param string $errorMessage
-     */
-    public function setErrorMessage($errorMessage): void
+    public function setErrorMessage(?string $errorMessage): void
     {
         $this->errorMessage = $errorMessage;
     }
 
-    /**
-     * @return string
-     */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -384,10 +355,7 @@ class Email
         $this->status = $status;
     }
 
-    /**
-     * @return int
-     */
-    public function getRetries()
+    public function getRetries(): int
     {
         return $this->retries;
     }

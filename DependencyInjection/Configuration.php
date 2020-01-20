@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PaneeDesign\DatabaseSwiftMailerBundle\DependencyInjection;
 
+use PaneeDesign\DatabaseSwiftMailerBundle\Controller\EmailController;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -38,6 +39,14 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->booleanNode('auto_flush')
                     ->defaultTrue()
+                ->end()
+                ->arrayNode('views')
+                    ->children()
+                        ->integerNode('max_page_rows')
+                            ->info('Number of item per page')
+                            ->defaultValue(EmailController::MAX_PAGE_ROWS)
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
 

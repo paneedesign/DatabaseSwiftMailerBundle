@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Webmozart\Assert\Assert;
 
 /**
  * Email controller.
@@ -21,11 +22,17 @@ class EmailController extends AbstractController
     /**
      * @var EmailServiceInterface
      */
-    private $service;
+    private $emailService;
 
-    public function __construct(EmailServiceInterface $service)
+    /**
+     * @var int
+     */
+    private $maxPageRows;
+
+    public function __construct(EmailServiceInterface $emailService, ?int $maxPageRows = self::MAX_PAGE_ROWS)
     {
-        $this->service = $service;
+        $this->emailService = $emailService;
+        $this->maxPageRows = $maxPageRows;
     }
 
     /**
@@ -45,20 +52,26 @@ class EmailController extends AbstractController
      */
     public function indexAction($page)
     {
-        $emails = $this->service
-            ->paginate(self::MAX_PAGE_ROWS, ($page - 1) * self::MAX_PAGE_ROWS);
+        $limit = $this->maxPageRows;
+        $offset = ($page - 1) * $this->maxPageRows;
+
+        $emails = $this->emailService->paginate($limit, $offset);
+        $count = $this->emailService->count();
 
         return $this->render('PedDatabaseSwiftMailerBundle:Email:index.html.twig', [
             'entities' => $emails,
             'page' => $page,
-            'max_page_rows' => self::MAX_PAGE_ROWS,
+            'max_page_rows' => $this->maxPageRows,
+            'from' => $offset,
+            'to' => min($limit + $offset, $count),
+            'total' => $count,
         ]);
     }
 
     /**
      * Finds and displays a Email entity.
      *
-     * @Route("/{id}/show", name="email-spool_show", methods={"GET"})
+     * @Route("/{id}/show", name="email-spool_show", methods={"GET"}, requirements={"id" = "\d+"})
      *
      * @param $id
      *
@@ -66,7 +79,9 @@ class EmailController extends AbstractController
      */
     public function showAction($id)
     {
-        $email = $this->service->getById((int) $id);
+        Assert::integer($id);
+
+        $email = $this->emailService->getById($id);
 
         return $this->render('PedDatabaseSwiftMailerBundle:Email:show.html.twig', [
             'entity' => $email,
@@ -76,7 +91,7 @@ class EmailController extends AbstractController
     /**
      * Retry to send an email.
      *
-     * @Route("/{id}/retry", name="email-spool_retry", methods={"GET"})
+     * @Route("/{id}/retry", name="email-spool_retry", methods={"GET"}, requirements={"id" = "\d+"})
      *
      * @param $id
      *
@@ -86,7 +101,9 @@ class EmailController extends AbstractController
      */
     public function retryAction($id)
     {
-        $this->service->retryById((int) $id);
+        Assert::integer($id);
+
+        $this->emailService->retryById($id);
 
         return $this->redirectToRoute('email-spool');
     }
@@ -104,7 +121,7 @@ class EmailController extends AbstractController
      */
     public function resendAction($id)
     {
-        $this->service->resendById((int) $id);
+        $this->emailService->resendById($id);
 
         return $this->redirectToRoute('email-spool');
     }
@@ -112,7 +129,7 @@ class EmailController extends AbstractController
     /**
      * Cancel an email sending.
      *
-     * @Route("/{id}/cancel", name="email-spool_cancel", methods={"GET"})
+     * @Route("/{id}/cancel", name="email-spool_cancel", methods={"GET"}, requirements={"id" = "\d+"})
      *
      * @param $id
      *
@@ -122,7 +139,9 @@ class EmailController extends AbstractController
      */
     public function cancelAction($id)
     {
-        $this->service->cancelById((int) $id);
+        Assert::integer($id);
+
+        $this->emailService->cancelById($id);
 
         return $this->redirectToRoute('email-spool');
     }
@@ -130,7 +149,7 @@ class EmailController extends AbstractController
     /**
      * Deletes a Email entity.
      *
-     * @Route("/{id}/delete", name="email-spool_delete", methods={"GET"})
+     * @Route("/{id}/delete", name="email-spool_delete", methods={"GET"}, requirements={"id" = "\d+"}))
      *
      * @param $id
      *
@@ -138,7 +157,9 @@ class EmailController extends AbstractController
      */
     public function deleteAction($id)
     {
-        $this->service->deleteById((int) $id);
+        Assert::integer($id);
+
+        $this->emailService->deleteById($id);
 
         return $this->redirectToRoute('email-spool');
     }

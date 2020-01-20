@@ -26,7 +26,7 @@
     ],
     "require": {
         "php": "^7.2.0",
-        "symfony/framework-bundle": "^4.2|^5.0"
+        "webmozart/assert": "^1.0"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.0",
@@ -34,6 +34,7 @@
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpunit/phpunit": "^8.5",
         "symfony/form": "^4.2|^5.0",
+        "symfony/framework-bundle": "^4.2|^5.0",
         "symfony/swiftmailer-bundle": "^3.2"
     },
     "config": {
@@ -58,7 +59,7 @@
         ]
     },
     "conflict": {
-        "symfony/symfony": "*"
+        "symfony/symfony": "^4.2|^5.0"
     },
     "extra": {
         "branch-alias": {

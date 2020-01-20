@@ -14,6 +14,8 @@ interface EmailServiceInterface
 
     public function paginate(?int $limit = null, ?int $offset = null): array;
 
+    public function count(): int;
+
     public function add(Swift_Mime_SimpleMessage $message, ?bool $autoFlush = true): void;
 
     public function getQueue(int $limit = 100, int $maxRetries = 10): array;

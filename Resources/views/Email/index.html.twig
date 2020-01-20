@@ -62,6 +62,9 @@
 
             <div class="text-center">
                 <div class="navigation">
+                    {% if to > 0 %}
+                        {{ 'Show from ' ~ from ~ ' to ' ~ to ~ ' of ' ~ total }}<br>
+                    {% endif %}
                     {% if page > 1 %}
                         <a href="{{ path('email-spool', { 'page': page - 1 }) }}">Prev</a>
                     {% else %}

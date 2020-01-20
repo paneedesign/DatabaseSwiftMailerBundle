@@ -15,18 +15,16 @@ class DatabaseSpool extends Swift_ConfigurableSpool
     /**
      * @var EmailServiceInterface
      */
-    private $service;
+    private $emailService;
 
     /**
-     * àùè
-     *
      * @var array|null
      */
     private $parameters;
 
-    public function __construct(EmailServiceInterface $service, ?array $parameters = [])
+    public function __construct(EmailServiceInterface $emailService, ?array $parameters = [])
     {
-        $this->service = $service;
+        $this->emailService = $emailService;
         $this->parameters = $parameters;
     }
 
@@ -65,7 +63,7 @@ class DatabaseSpool extends Swift_ConfigurableSpool
      */
     public function queueMessage(Swift_Mime_SimpleMessage $message)
     {
-        $this->service->add($message, $this->parameters['auto_flush']);
+        $this->emailService->add($message, $this->parameters['auto_flush']);
 
         return true;
     }
@@ -86,7 +84,7 @@ class DatabaseSpool extends Swift_ConfigurableSpool
 
         $sentEmails = 0;
 
-        $emails = $this->service->getQueue($this->getMessageLimit(), $this->parameters['max_retries']);
+        $emails = $this->emailService->getQueue($this->getMessageLimit(), $this->parameters['max_retries']);
 
         foreach ($emails as $email) {
             /* @var Swift_Mime_SimpleMessage $message */
@@ -97,9 +95,9 @@ class DatabaseSpool extends Swift_ConfigurableSpool
 
                 if ($sent > 0) {
                     if ($this->parameters['delete_sent_messages']) {
-                        $this->service->delete($email);
+                        $this->emailService->delete($email);
                     } else {
-                        $this->service->markComplete($email);
+                        $this->emailService->markComplete($email);
                     }
 
                     $sentEmails += $sent;
@@ -107,7 +105,7 @@ class DatabaseSpool extends Swift_ConfigurableSpool
                     throw new Swift_SwiftException('The email was not sent.');
                 }
             } catch (Swift_SwiftException $ex) {
-                $this->service->markFailed($email, $ex);
+                $this->emailService->markFailed($email, $ex);
             }
         }
 

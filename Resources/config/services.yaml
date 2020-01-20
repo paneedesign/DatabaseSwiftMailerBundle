@@ -1,4 +1,9 @@
 services:
+    repository.email:
+        class: PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository
+        factory: ['@=service(container.getParameter("ped_database_swift_mailer.entity_manager"))', 'getRepository']
+        arguments: ['PedDatabaseSwiftMailerBundle:Email']
+
     PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository:
         arguments: ['@doctrine']
         tags: ['doctrine.repository_service']
@@ -6,8 +11,7 @@ services:
     PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepositoryInterface: '@PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository'
 
     PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailService:
-        arguments:
-            $emailManager: '@=service(container.hasParameter("ped_database_swift_mailer.entity_manager") ? parameter("ped_database_swift_mailer.entity_manager") : "doctrine.orm.default_entity_manager")'
+        arguments: ['@=service(container.getParameter("ped_database_swift_mailer.entity_manager"))', '@repository.email']
 
     PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface: '@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailService'
 
@@ -16,5 +20,5 @@ services:
         arguments: ['@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface']
 
     PaneeDesign\DatabaseSwiftMailerBundle\Controller\EmailController:
-        arguments: ['@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface']
+        arguments: ['@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface', "%ped_database_swift_mailer.views.max_page_rows%"]
         tags: ['controller.service_arguments']

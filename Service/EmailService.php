@@ -25,10 +25,10 @@ class EmailService implements EmailServiceInterface
      */
     private $repository;
 
-    public function __construct(EntityManagerInterface $emailManager)
+    public function __construct(EntityManagerInterface $manager, EmailRepository $repository)
     {
-        $this->manager = $emailManager;
-        $this->repository = $this->manager->getRepository(Email::class);
+        $this->manager = $manager;
+        $this->repository = $repository;
     }
 
     /**
@@ -57,6 +57,12 @@ class EmailService implements EmailServiceInterface
         return $this->repository
             ->getAllEmails($limit, $offset)
             ->getResult();
+    }
+
+    public function count(): int
+    {
+        return $this->repository
+            ->count([]);
     }
 
     /**
@@ -206,10 +212,12 @@ class EmailService implements EmailServiceInterface
      */
     public function markComplete(Email $email): void
     {
+        $now = new DateTime();
+
         $email->setStatus(Email::STATUS_COMPLETE);
-        $email->setSentAt(new DateTime());
+        $email->setSentAt($now);
         $email->setErrorMessage(null);
-        $email->setUpdatedAt(new DateTime());
+        $email->setUpdatedAt($now);
 
         $this->manager->persist($email);
         $this->manager->flush();
