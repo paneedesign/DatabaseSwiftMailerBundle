@@ -78,14 +78,24 @@ class EmailService implements EmailServiceInterface
         if (null !== $message->getTo()) {
             $email->setToEmail(implode('; ', array_keys($message->getTo())));
         }
+
         if (null !== $message->getCc()) {
             $email->setCcEmail(implode('; ', array_keys($message->getCc())));
         }
+
         if (null !== $message->getBcc()) {
             $email->setBccEmail(implode('; ', array_keys($message->getBcc())));
         }
+
         if (null !== $message->getReplyTo()) {
-            $email->setReplyToEmail($message->getReplyTo());
+            /** @var array|string $replyTo */
+            $replyTo = $message->getReplyTo();
+
+            if (\is_array($message->getReplyTo())) {
+                $email->setReplyToEmail(implode('; ', array_keys($replyTo)));
+            } else {
+                $email->setReplyToEmail($message->getReplyTo());
+            }
         }
 
         $email->setBody($message->getBody());

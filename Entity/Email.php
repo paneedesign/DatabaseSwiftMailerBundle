@@ -149,152 +149,74 @@ class Email
         return $this->id;
     }
 
-    /**
-     * Set subject.
-     *
-     * @param string $subject
-     *
-     * @return Email
-     */
-    public function setSubject($subject)
+    public function setSubject(string $subject): void
     {
         $this->subject = $subject;
-
-        return $this;
     }
 
-    /**
-     * Get subject.
-     *
-     * @return string
-     */
-    public function getSubject()
+    public function getSubject(): string
     {
         return $this->subject;
     }
 
-    /**
-     * Set fromEmail.
-     *
-     * @param string $fromEmail
-     *
-     * @return Email
-     */
-    public function setFromEmail($fromEmail)
+    public function setFromEmail(string $fromEmail): void
     {
         $this->fromEmail = $fromEmail;
-
-        return $this;
     }
 
-    /**
-     * Get fromEmail.
-     *
-     * @return string
-     */
-    public function getFromEmail()
+    public function getFromEmail(): string
     {
         return $this->fromEmail;
     }
 
-    /**
-     * Set toEmail.
-     *
-     * @param string $toEmail
-     *
-     * @return Email
-     */
-    public function setToEmail($toEmail)
+    public function setToEmail(?string $toEmail): void
     {
         $this->toEmail = $toEmail;
-
-        return $this;
     }
 
-    /**
-     * Get toEmail.
-     *
-     * @return string
-     */
-    public function getToEmail()
+    public function getToEmail(): ?string
     {
         return $this->toEmail;
     }
 
-    /**
-     * @return string
-     */
-    public function getCcEmail()
-    {
-        return $this->ccEmail;
-    }
-
-    /**
-     * @param string $ccEmail
-     */
-    public function setCcEmail($ccEmail): void
+    public function setCcEmail(?string $ccEmail): void
     {
         $this->ccEmail = $ccEmail;
     }
 
-    /**
-     * @return string
-     */
-    public function getBccEmail()
+    public function getCcEmail(): ?string
     {
-        return $this->bccEmail;
+        return $this->ccEmail;
     }
 
-    /**
-     * @param string $bccEmail
-     */
-    public function setBccEmail($bccEmail): void
+    public function setBccEmail(?string $bccEmail): void
     {
         $this->bccEmail = $bccEmail;
     }
 
-    /**
-     * @return string
-     */
-    public function getReplyToEmail()
+    public function getBccEmail(): ?string
+    {
+        return $this->bccEmail;
+    }
+
+    public function setReplyToEmail(?string $replyToEmail): void
+    {
+        $this->replyToEmail = $replyToEmail;
+    }
+
+    public function getReplyToEmail(): ?string
     {
         return $this->replyToEmail;
     }
 
-    /**
-     * @param string $replyToEmail
-     *
-     * @return Email
-     */
-    public function setReplyToEmail($replyToEmail)
-    {
-        $this->replyToEmail = $replyToEmail;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBody()
-    {
-        return $this->body;
-    }
-
-    /**
-     * @param string $body
-     */
-    public function setBody($body): void
+    public function setBody(string $body): void
     {
         $this->body = $body;
     }
 
-    /**
-     * @return Swift_Mime_SimpleMessage
-     */
-    public function getMessage()
+    public function getBody(): string
     {
-        return unserialize(base64_decode($this->message));
+        return $this->body;
     }
 
     public function setMessage(Swift_Mime_SimpleMessage $message): void
@@ -302,9 +224,9 @@ class Email
         $this->message = base64_encode(serialize($message));
     }
 
-    public function getCreatedAt(): ?DateTimeInterface
+    public function getMessage(): Swift_Mime_SimpleMessage
     {
-        return $this->createdAt;
+        return unserialize(base64_decode($this->message));
     }
 
     public function setCreatedAt(DateTimeInterface $createdAt): void
@@ -312,9 +234,9 @@ class Email
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt(): ?DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
-        return $this->updatedAt;
+        return $this->createdAt;
     }
 
     public function setUpdatedAt(DateTimeInterface $updatedAt): void
@@ -322,9 +244,9 @@ class Email
         $this->updatedAt = $updatedAt;
     }
 
-    public function getSentAt(): ?DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
-        return $this->sentAt;
+        return $this->updatedAt;
     }
 
     public function setSentAt(DateTimeInterface $sentAt): void
@@ -332,9 +254,9 @@ class Email
         $this->sentAt = $sentAt;
     }
 
-    public function getErrorMessage(): ?string
+    public function getSentAt(): ?DateTimeInterface
     {
-        return $this->errorMessage;
+        return $this->sentAt;
     }
 
     public function setErrorMessage(?string $errorMessage): void
@@ -342,26 +264,28 @@ class Email
         $this->errorMessage = $errorMessage;
     }
 
+    public function getErrorMessage(): ?string
+    {
+        return $this->errorMessage;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
     public function getStatus(): string
     {
         return $this->status;
     }
 
-    /**
-     * @param string $status
-     */
-    public function setStatus($status): void
+    public function setRetries(int $retries): void
     {
-        $this->status = $status;
+        $this->retries = $retries;
     }
 
     public function getRetries(): int
     {
         return $this->retries;
-    }
-
-    public function setRetries(int $retries): void
-    {
-        $this->retries = $retries;
     }
 }
