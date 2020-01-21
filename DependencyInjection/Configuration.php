@@ -38,18 +38,30 @@ class Configuration implements ConfigurationInterface
                     ->defaultFalse()
                 ->end()
                 ->booleanNode('auto_flush')
+                    ->info('Persist email entity immediately, without check pending persists')
                     ->defaultTrue()
                 ->end()
-                ->arrayNode('views')
-                    ->children()
-                        ->integerNode('max_page_rows')
-                            ->info('Number of item per page')
-                            ->defaultValue(EmailController::MAX_PAGE_ROWS)
-                        ->end()
-                    ->end()
-                ->end()
+                ->append($this->addViewsSection())
             ->end();
 
         return $treeBuilder;
+    }
+
+    private function addViewsSection()
+    {
+        $treeBuilder = new TreeBuilder('views');
+        $node = $treeBuilder->getRootNode();
+
+        $node
+            ->info('Section can be enabled to handle views parameters')
+            ->canBeEnabled()
+            ->children()
+                ->integerNode('max_page_rows')
+                    ->info('Number of item per page')
+                    ->defaultValue(EmailController::MAX_PAGE_ROWS)
+                ->end()
+            ->end();
+
+        return $node;
     }
 }

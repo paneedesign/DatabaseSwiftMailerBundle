@@ -62,7 +62,7 @@ class EmailController extends AbstractController
             'entities' => $emails,
             'page' => $page,
             'max_page_rows' => $this->maxPageRows,
-            'from' => $offset,
+            'from' => $offset + 1,
             'to' => min($limit + $offset, $count),
             'total' => $count,
         ]);

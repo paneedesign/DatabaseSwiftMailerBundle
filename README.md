@@ -46,6 +46,7 @@ SMD_MAX_RETRIES=10
 SMD_DELETE_SENT_MESSAGES=false
 SMD_AUTO_FLUSH=true
 SMD_ENTITY_MANAGER=doctrine.default_entity_manager
+SMD_MAX_PAGE_ROWS=30
 ###< paneedesign/database-swift-mailer ###
 ```
 
@@ -57,6 +58,8 @@ ped_database_swift_mailer:
     delete_sent_messages: "%env(bool:SMD_DELETE_SENT_MESSAGES)%"
     auto_flush: "%env(bool:SMD_AUTO_FLUSH)%"
     entity_manager: "%env(SMD_ENTITY_MANAGER)%"
+    views:
+        max_page_rows: "%env(int:SMD_MAX_PAGE_ROWS)%"
 ```
 
 Create `config/routes/ped_database_swift_mailer.yaml`

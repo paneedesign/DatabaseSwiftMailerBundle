@@ -16,7 +16,9 @@ services:
     PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface: '@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailService'
 
     PaneeDesign\DatabaseSwiftMailerBundle\Controller\EmailController:
-        arguments: ['@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface', "%ped_database_swift_mailer.views.max_page_rows%"]
+        arguments:
+            - '@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface'
+            - "@=container.hasParameter('ped_database_swift_mailer.views.max_page_rows') ? parameter('ped_database_swift_mailer.views.max_page_rows') : 30"
         tags: ['controller.service_arguments']
 
     PaneeDesign\DatabaseSwiftMailerBundle\Spool\DatabaseSpool:
@@ -24,7 +26,7 @@ services:
             $emailService: '@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface'
             $parameters:
                 auto_flush: "%ped_database_swift_mailer.auto_flush%"
-                max_retries: "%ped_database_swift_mailer.auto_flush%"
+                max_retries: "%ped_database_swift_mailer.max_retries%"
                 delete_sent_messages: "%ped_database_swift_mailer.delete_sent_messages%"
 
     swiftmailer.spool.db:
