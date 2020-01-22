@@ -52,7 +52,7 @@ class EmailService implements EmailServiceInterface
      *
      * @return Email[]
      */
-    public function paginate(?int $limit = null, ?int $offset = null): array
+    public function getAll(?int $limit = null, ?int $offset = null): array
     {
         return $this->repository
             ->getAllEmails($limit, $offset)

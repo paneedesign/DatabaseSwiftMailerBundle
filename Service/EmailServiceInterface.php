@@ -12,7 +12,7 @@ interface EmailServiceInterface
 {
     public function getById(int $id): Email;
 
-    public function paginate(?int $limit = null, ?int $offset = null): array;
+    public function getAll(?int $limit = null, ?int $offset = null): array;
 
     public function count(): int;
 

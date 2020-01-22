@@ -45,7 +45,7 @@ Add to `.env`
 SMD_MAX_RETRIES=10
 SMD_DELETE_SENT_MESSAGES=false
 SMD_AUTO_FLUSH=true
-SMD_ENTITY_MANAGER=doctrine.default_entity_manager
+SMD_ENTITY_MANAGER=doctrine.orm.default_entity_manager
 SMD_MAX_PAGE_ROWS=30
 ###< paneedesign/database-swift-mailer ###
 ```

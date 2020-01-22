@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Controller;
 
 use Exception;
-use PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email;
 use PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -55,7 +54,7 @@ class EmailController extends AbstractController
         $limit = $this->maxPageRows;
         $offset = ($page - 1) * $this->maxPageRows;
 
-        $emails = $this->emailService->paginate($limit, $offset);
+        $emails = $this->emailService->getAll($limit, $offset);
         $count = $this->emailService->count();
 
         return $this->render('PedDatabaseSwiftMailerBundle:Email:index.html.twig', [
@@ -72,13 +71,11 @@ class EmailController extends AbstractController
      * Finds and displays a Email entity.
      *
      * @Route("/{id}/show", name="email-spool_show", methods={"GET"}, requirements={"id" = "\d+"})
-     *
-     * @param $id
-     *
-     * @return Response
      */
-    public function showAction(Email $email)
+    public function showAction(int $id): Response
     {
+        $email = $this->emailService->getById($id);
+
         return $this->render('PedDatabaseSwiftMailerBundle:Email:show.html.twig', [
             'entity' => $email,
         ]);
@@ -89,15 +86,11 @@ class EmailController extends AbstractController
      *
      * @Route("/{id}/retry", name="email-spool_retry", methods={"GET"}, requirements={"id" = "\d+"})
      *
-     * @param $id
-     *
      * @throws Exception
-     *
-     * @return RedirectResponse
      */
-    public function retryAction(Email $email)
+    public function retryAction(int $id): RedirectResponse
     {
-        $this->emailService->retry($email);
+        $this->emailService->retryById($id);
 
         return $this->redirectToRoute('email-spool');
     }
@@ -107,15 +100,11 @@ class EmailController extends AbstractController
      *
      * @Route("/{id}/resend", name="email-spool_resend", methods={"GET"})
      *
-     * @param $id
-     *
      * @throws Exception
-     *
-     * @return RedirectResponse
      */
-    public function resendAction(Email $email)
+    public function resendAction(int $id): RedirectResponse
     {
-        $this->emailService->resend($email);
+        $this->emailService->resendById($id);
 
         return $this->redirectToRoute('email-spool');
     }
@@ -125,15 +114,11 @@ class EmailController extends AbstractController
      *
      * @Route("/{id}/cancel", name="email-spool_cancel", methods={"GET"}, requirements={"id" = "\d+"})
      *
-     * @param $id
-     *
      * @throws Exception
-     *
-     * @return RedirectResponse
      */
-    public function cancelAction(Email $email)
+    public function cancelAction(int $id): RedirectResponse
     {
-        $this->emailService->cancel($email);
+        $this->emailService->cancelById($id);
 
         return $this->redirectToRoute('email-spool');
     }
@@ -142,14 +127,10 @@ class EmailController extends AbstractController
      * Deletes a Email entity.
      *
      * @Route("/{id}/delete", name="email-spool_delete", methods={"GET"}, requirements={"id" = "\d+"}))
-     *
-     * @param $id
-     *
-     * @return RedirectResponse
      */
-    public function deleteAction(Email $email)
+    public function deleteAction(int $id): RedirectResponse
     {
-        $this->emailService->delete($email);
+        $this->emailService->deleteById($id);
 
         return $this->redirectToRoute('email-spool');
     }
