@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PaneeDesign\DatabaseSwiftMailerBundle\DependencyInjection;
 
 use PaneeDesign\DatabaseSwiftMailerBundle\Controller\EmailController;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -21,9 +22,9 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('ped_database_swift_mailer');
+        $rootNode = $treeBuilder->getRootNode();
 
-        $treeBuilder
-            ->getRootNode()
+        $rootNode
             ->children()
                 ->scalarNode('entity_manager')
                     ->info('Custom entity manager')
@@ -41,27 +42,27 @@ class Configuration implements ConfigurationInterface
                     ->info('Persist email entity immediately, without check pending persists')
                     ->defaultTrue()
                 ->end()
-                ->append($this->addViewsSection())
             ->end();
+
+        $this->addViewsSection($rootNode);
 
         return $treeBuilder;
     }
 
-    private function addViewsSection()
+    private function addViewsSection(ArrayNodeDefinition $rootNode)
     {
-        $treeBuilder = new TreeBuilder('views');
-        $node = $treeBuilder->getRootNode();
-
-        $node
-            ->info('Section can be enabled to handle views parameters')
-            ->canBeEnabled()
+        $rootNode
             ->children()
-                ->integerNode('max_page_rows')
-                    ->info('Number of item per page')
-                    ->defaultValue(EmailController::MAX_PAGE_ROWS)
+                ->arrayNode('views')
+                    ->info('Section can be enabled to handle views parameters')
+                    ->canBeEnabled()
+                    ->children()
+                        ->integerNode('max_page_rows')
+                            ->info('Number of item per page')
+                            ->defaultValue(EmailController::MAX_PAGE_ROWS)
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
-
-        return $node;
     }
 }

@@ -73,29 +73,28 @@ class EmailService implements EmailServiceInterface
     public function add(Swift_Mime_SimpleMessage $message, ?bool $autoFlush = true): void
     {
         $email = new Email();
-        $email->setFromEmail(implode('; ', array_keys($message->getFrom())));
 
-        if (null !== $message->getTo()) {
+        if (\is_array($message->getFrom()) && \count($message->getFrom())) {
+            $email->setFromEmail(implode('; ', array_keys($message->getFrom())));
+        }
+
+        if (\is_array($message->getTo()) && \count($message->getTo())) {
             $email->setToEmail(implode('; ', array_keys($message->getTo())));
         }
 
-        if (null !== $message->getCc()) {
+        if (\is_array($message->getCc()) && \count($message->getCc())) {
             $email->setCcEmail(implode('; ', array_keys($message->getCc())));
         }
 
-        if (null !== $message->getBcc()) {
+        if (\is_array($message->getBcc()) && \count($message->getBcc())) {
             $email->setBccEmail(implode('; ', array_keys($message->getBcc())));
         }
 
-        if (null !== $message->getReplyTo()) {
-            /** @var array|string $replyTo */
-            $replyTo = $message->getReplyTo();
+        /** @var array $replyTo */
+        $replyTo = $message->getReplyTo();
 
-            if (\is_array($message->getReplyTo())) {
-                $email->setReplyToEmail(implode('; ', array_keys($replyTo)));
-            } else {
-                $email->setReplyToEmail($message->getReplyTo());
-            }
+        if (\is_array($replyTo) && \count($replyTo)) {
+            $email->setReplyToEmail(implode('; ', array_keys($replyTo)));
         }
 
         $email->setBody($message->getBody());
@@ -107,19 +106,11 @@ class EmailService implements EmailServiceInterface
             $this->manager->persist($email);
             $this->manager->flush();
         } else {
-            $uow = $this->manager->getUnitOfWork();
-
-            $scheduledDbChanges = 0;
-            $scheduledDbChanges += \count($uow->getScheduledEntityInsertions());
-            $scheduledDbChanges += \count($uow->getScheduledEntityUpdates());
-            $scheduledDbChanges += \count($uow->getScheduledEntityDeletions());
-            $scheduledDbChanges += \count($uow->getScheduledCollectionUpdates());
-            $scheduledDbChanges += \count($uow->getScheduledCollectionUpdates());
-
+            $canFlush = $this->isDbChangesScheduled();
             $this->manager->persist($email);
 
             // Flush only if there are not other db changes
-            if (0 === $scheduledDbChanges) {
+            if ($canFlush) {
                 $this->manager->flush();
             }
         }
@@ -243,5 +234,19 @@ class EmailService implements EmailServiceInterface
 
         $this->manager->persist($email);
         $this->manager->flush();
+    }
+
+    private function isDbChangesScheduled(): bool
+    {
+        $uow = $this->manager->getUnitOfWork();
+
+        $count = 0;
+        $count += \count($uow->getScheduledEntityInsertions());
+        $count += \count($uow->getScheduledEntityUpdates());
+        $count += \count($uow->getScheduledEntityDeletions());
+        $count += \count($uow->getScheduledCollectionUpdates());
+        $count += \count($uow->getScheduledCollectionUpdates());
+
+        return $count === 0;
     }
 }
