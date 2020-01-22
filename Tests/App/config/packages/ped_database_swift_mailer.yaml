@@ -1,0 +1,6 @@
+ped_database_swift_mailer:
+    max_retries: 10
+    delete_sent_messages: false
+    auto_flush: true
+    views:
+        max_page_rows: 10

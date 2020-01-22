@@ -10,8 +10,12 @@
     <php>
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
-        <server name="KERNEL_CLASS" value="PaneeDesign\DatabaseSwiftMailerBundle\Kernel" />
+        <env name="SHELL_VERBOSITY" value="-1" />
+        <server name="DATABASE_URL" value="mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7"/>
+        <server name="KERNEL_CLASS" value="PaneeDesign\DatabaseSwiftMailerBundle\Tests\TestKernel" />
         <server name="SHELL_VERBOSITY" value="-1" />
+        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
+        <server name="SYMFONY_PHPUNIT_VERSION" value="7.5" />
     </php>
 
     <testsuites>

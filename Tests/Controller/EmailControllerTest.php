@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Tests\Controller;
 
+use PaneeDesign\DatabaseSwiftMailerBundle\Tests\TestKernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class EmailControllerTest extends WebTestCase
@@ -13,8 +14,12 @@ class EmailControllerTest extends WebTestCase
         // Create a new client to browse the application
         $client = static::createClient();
 
+        static::bootKernel();
+        $container = self::$kernel->getContainer();
+        $url = $container->get('router')->generate('email-spool');
+
         // Create a new entry in the database
-        $crawler = $client->request('GET', '/email-spool/');
+        $crawler = $client->request('GET', $url);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Unexpected HTTP status code for GET /email-spool/');
         $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
 
