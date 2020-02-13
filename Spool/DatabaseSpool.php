@@ -12,6 +12,8 @@ use Swift_Transport;
 
 class DatabaseSpool extends Swift_ConfigurableSpool
 {
+    public const MESSAGE_LIMIT = 10;
+
     /**
      * @var EmailServiceInterface
      */
@@ -83,8 +85,9 @@ class DatabaseSpool extends Swift_ConfigurableSpool
         }
 
         $sentEmails = 0;
+        $messageLimit = $this->getMessageLimit() ?? self::MESSAGE_LIMIT;
 
-        $emails = $this->emailService->getQueue($this->getMessageLimit(), $this->parameters['max_retries']);
+        $emails = $this->emailService->getQueue($messageLimit, $this->parameters['max_retries']);
 
         foreach ($emails as $email) {
             /* @var Swift_Mime_SimpleMessage $message */

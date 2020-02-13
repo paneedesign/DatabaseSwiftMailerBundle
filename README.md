@@ -90,8 +90,10 @@ swiftmailer:
 To send emails that are in the database spool, just run the following command:
 
 ```sh
-bin/console swiftmailer:spool:send
+bin/console swiftmailer:spool:send --message-limit=10 --time-limit=3600 
 ```
+
+with `message-limit` and `time-limit` tunable.
 
 You may add a cron job entry to run it periodically.
 
