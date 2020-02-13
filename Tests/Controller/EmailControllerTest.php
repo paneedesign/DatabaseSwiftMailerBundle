@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Tests\Controller;
 
-use PaneeDesign\DatabaseSwiftMailerBundle\Tests\TestKernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class EmailControllerTest extends WebTestCase
 {
-    public function testCompleteScenario()
+    public function testCompleteScenario(): void
     {
         // Create a new client to browse the application
         $client = static::createClient();

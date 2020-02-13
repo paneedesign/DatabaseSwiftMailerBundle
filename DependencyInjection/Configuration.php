@@ -22,6 +22,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('ped_database_swift_mailer');
+
+        /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
@@ -49,7 +51,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addViewsSection(ArrayNodeDefinition $rootNode)
+    private function addViewsSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()

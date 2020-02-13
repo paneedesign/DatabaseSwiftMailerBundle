@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Tests;
 
@@ -28,13 +29,10 @@ class TestKernel extends Kernel
 
     public function getProjectDir(): string
     {
-        return \dirname(__DIR__).'/Tests/App';
+        return \dirname(__DIR__) . '/Tests/App';
     }
 
     /**
-     * @param ContainerBuilder $container
-     * @param LoaderInterface $loader
-     *
      * @throws \Exception
      */
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
@@ -51,8 +49,6 @@ class TestKernel extends Kernel
     }
 
     /**
-     * @param RouteCollectionBuilder $routes
-     *
      * @throws \Symfony\Component\Config\Exception\LoaderLoadException
      */
     protected function configureRoutes(RouteCollectionBuilder $routes): void

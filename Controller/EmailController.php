@@ -28,7 +28,7 @@ class EmailController extends AbstractController
      */
     private $maxPageRows;
 
-    public function __construct(EmailServiceInterface $emailService, ?int $maxPageRows = self::MAX_PAGE_ROWS)
+    public function __construct(EmailServiceInterface $emailService, int $maxPageRows = self::MAX_PAGE_ROWS)
     {
         $this->emailService = $emailService;
         $this->maxPageRows = $maxPageRows;
@@ -44,12 +44,8 @@ class EmailController extends AbstractController
      *     requirements={"page" = "\d+"},
      *     methods={"GET"}
      * )
-     *
-     * @param $page
-     *
-     * @return Response
      */
-    public function indexAction($page)
+    public function indexAction(int $page): Response
     {
         $limit = $this->maxPageRows;
         $offset = ($page - 1) * $this->maxPageRows;

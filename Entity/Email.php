@@ -46,28 +46,28 @@ class Email
     private $fromEmail;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="to_email", type="string", length=255, nullable=true)
      */
     private $toEmail;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="cc_email", type="string", length=255, nullable=true)
      */
     private $ccEmail;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="bcc_email", type="string", length=255, nullable=true)
      */
     private $bccEmail;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="reply_to_email", type="string", length=255, nullable=true)
      */
@@ -102,28 +102,28 @@ class Email
     private $retries = 0;
 
     /**
-     * @var DateTimeInterface
+     * @var ?DateTimeInterface
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
 
     /**
-     * @var DateTimeInterface
+     * @var ?DateTimeInterface
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 
     /**
-     * @var DateTimeInterface
+     * @var ?DateTimeInterface
      *
      * @ORM\Column(name="sent_at", type="datetime", nullable=true)
      */
     private $sentAt;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="error_message", type="text", nullable=true)
      */

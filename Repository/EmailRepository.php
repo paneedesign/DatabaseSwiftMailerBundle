@@ -19,11 +19,17 @@ class EmailRepository extends ServiceEntityRepository implements EmailRepository
     public function getAllEmails(?int $limit = null, ?int $offset = null): Query
     {
         $qb = $this->createQueryBuilder('e');
+        $qb->addOrderBy('e.createdAt', 'DESC');
 
-        return $qb->addOrderBy('e.createdAt', 'DESC')
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
-            ->getQuery();
+        if ($limit !== null) {
+            $qb->setMaxResults($limit);
+        }
+
+        if ($offset !== null) {
+            $qb->setFirstResult($offset);
+        }
+
+        return $qb->getQuery();
     }
 
     public function getEmailQueue(?int $limit = 100, ?int $maxRetries = 10): Query
