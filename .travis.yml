@@ -14,19 +14,30 @@ env:
 matrix:
     fast_finish: true
     include:
+          # Minimum supported dependencies with the latest and oldest PHP version
+        - php: 7.2
+          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
+        - php: 7.3
+          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
+        - php: 7.4
+          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
+
+        # Test the latest stable release
         - php: 7.2
         - php: 7.3
-          env: SYMFONY="5.0.*"
-               ACTION="update"
         - php: 7.4
+          env: COVERAGE=true PHPUNIT_FLAGS="-v --coverage-text"
+
+        - php: 7.4
+          env: STABILITY="dev"
 
     allow_failures:
           # Dev-master is allowed to fail.
         - env: STABILITY="dev"
 
 before_install:
-    - php -r "echo ini_get('memory_limit').PHP_EOL;"
-    - if [[ $COVERAGE != true ]]; then phpenv config-rm xdebug.ini || true; fi
+    - if [[ "$TRAVIS_PHP_VERSION" == "7.4snapshot" ]]; then phpenv config-rm xdebug.ini || true; fi;
+    - if [[ $COVERAGE != true ]]; then phpenv config-rm xdebug.ini || true; fi;
     - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
     - if ! [ -v "$DEPENDENCIES" ]; then composer require --no-update ${DEPENDENCIES}; fi;
 
@@ -36,7 +47,7 @@ install:
 
 script:
     # this checks that the source code follows the Symfony Code Syntax rules
-    - '[[ "$TRAVIS_PHP_VERSION" == "7.4" ]] || ./vendor/bin/php-cs-fixer fix --diff --dry-run -v'
+    - if [[ "$TRAVIS_PHP_VERSION" == "7.4" ]]; then composer beautify-dry-run || true; fi;
     - composer validate --strict --no-check-lock
     # simple-phpunit is the PHPUnit wrapper provided by the PHPUnit Bridge component and
     # it helps with testing legacy code and deprecations (composer require symfony/phpunit-bridge)
