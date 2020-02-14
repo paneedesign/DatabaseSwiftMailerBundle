@@ -1,6 +1,7 @@
 # DatabaseSwiftMailerBundle
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dextervip/DatabaseSwiftMailerBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dextervip/DatabaseSwiftMailerBundle/?branch=master)
+[![Build Status](https://travis-ci.org/paneedesign/DatabaseSwiftMailerBundle.svg?branch=feature%2Fsf4-refactoring)](https://travis-ci.org/paneedesign/DatabaseSwiftMailerBundle)
 
 ## Introduction
 
