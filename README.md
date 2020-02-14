@@ -5,6 +5,9 @@
   <a href="#" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
+  <a href="https://travis-ci.org/paneedesign/DatabaseSwiftMailerBundle" target="_blank">
+    <img alt="Build Status" src="https://travis-ci.org/paneedesign/DatabaseSwiftMailerBundle.svg?branch=feature%2Fsf4-refactoring" />
+  </a>
 </p>
 
 ### 🏠 [Homepage](https://github.com/paneedesign/DatabaseSwiftMailerBundle)
