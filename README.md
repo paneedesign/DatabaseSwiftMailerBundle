@@ -1,6 +1,6 @@
 # DatabaseSwiftMailerBundle
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dextervip/DatabaseSwiftMailerBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dextervip/DatabaseSwiftMailerBundle/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/paneedesign/storage-bundle/v)](//packagist.org/packages/paneedesign/storage-bundle) [![Total Downloads](https://poser.pugx.org/paneedesign/storage-bundle/downloads)](//packagist.org/packages/paneedesign/storage-bundle) [![Latest Unstable Version](https://poser.pugx.org/paneedesign/storage-bundle/v/unstable)](//packagist.org/packages/paneedesign/storage-bundle) [![License](https://poser.pugx.org/paneedesign/storage-bundle/license)](//packagist.org/packages/paneedesign/storage-bundle) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dextervip/DatabaseSwiftMailerBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dextervip/DatabaseSwiftMailerBundle/?branch=master)
 [![Build Status](https://travis-ci.org/paneedesign/DatabaseSwiftMailerBundle.svg?branch=feature%2Fsf4-refactoring)](https://travis-ci.org/paneedesign/DatabaseSwiftMailerBundle)
 
 ## Introduction
