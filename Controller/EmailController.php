@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Controller;
 
-use DateTime;
-use Doctrine\ORM\EntityManager;
 use Exception;
-use PaneeDesign\DatabaseSwiftMailerBundle\Entity\Email;
-use PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository;
+use PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,22 +16,22 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EmailController extends AbstractController
 {
-    const MAX_PAGE_ROWS = 30;
+    public const MAX_PAGE_ROWS = 30;
 
     /**
-     * @var EntityManager
+     * @var EmailServiceInterface
      */
-    private $manager;
+    private $emailService;
 
     /**
-     * @var EmailRepository
+     * @var int
      */
-    private $repository;
+    private $maxPageRows;
 
-    public function __construct(EntityManager $manager, EmailRepository $repository)
+    public function __construct(EmailServiceInterface $emailService, int $maxPageRows = self::MAX_PAGE_ROWS)
     {
-        $this->manager = $manager;
-        $this->repository = $repository;
+        $this->emailService = $emailService;
+        $this->maxPageRows = $maxPageRows;
     }
 
     /**
@@ -46,74 +44,51 @@ class EmailController extends AbstractController
      *     requirements={"page" = "\d+"},
      *     methods={"GET"}
      * )
-     *
-     * @param $page
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction($page)
+    public function indexAction(int $page): Response
     {
-        $entities = $this->repository
-            ->getAllEmails(self::MAX_PAGE_ROWS, ($page - 1) * self::MAX_PAGE_ROWS)
-            ->getResult();
+        $limit = $this->maxPageRows;
+        $offset = ($page - 1) * $this->maxPageRows;
+
+        $emails = $this->emailService->getAll($limit, $offset);
+        $count = $this->emailService->count();
 
         return $this->render('PedDatabaseSwiftMailerBundle:Email:index.html.twig', [
-            'entities' => $entities,
+            'entities' => $emails,
             'page' => $page,
-            'max_page_rows' => self::MAX_PAGE_ROWS,
+            'max_page_rows' => $this->maxPageRows,
+            'from' => $offset + 1,
+            'to' => min($limit + $offset, $count),
+            'total' => $count,
         ]);
     }
 
     /**
      * Finds and displays a Email entity.
      *
-     * @Route("/{id}/show", name="email-spool_show", methods={"GET"})
-     *
-     * @param $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/{id}/show", name="email-spool_show", methods={"GET"}, requirements={"id" = "\d+"})
      */
-    public function showAction($id)
+    public function showAction(int $id): Response
     {
-        $entity = $this->repository->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Email entity.');
-        }
+        $email = $this->emailService->getById($id);
 
         return $this->render('PedDatabaseSwiftMailerBundle:Email:show.html.twig', [
-            'entity' => $entity,
+            'entity' => $email,
         ]);
     }
 
     /**
      * Retry to send an email.
      *
-     * @Route("/{id}/retry", name="email-spool_retry", methods={"GET"})
-     *
-     * @param $id
+     * @Route("/{id}/retry", name="email-spool_retry", methods={"GET"}, requirements={"id" = "\d+"})
      *
      * @throws Exception
-     *
-     * @return RedirectResponse
      */
-    public function retryAction($id)
+    public function retryAction(int $id): RedirectResponse
     {
-        /* @var Email $entity */
-        $entity = $this->repository->find($id);
+        $this->emailService->retryById($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Email entity.');
-        }
-
-        $entity->setStatus(Email::STATUS_FAILED);
-        $entity->setRetries(0);
-        $entity->setUpdatedAt(new DateTime());
-
-        $this->manager->persist($entity);
-        $this->manager->flush();
-
-        return $this->redirect($this->generateUrl('email-spool'));
+        return $this->redirectToRoute('email-spool');
     }
 
     /**
@@ -121,83 +96,38 @@ class EmailController extends AbstractController
      *
      * @Route("/{id}/resend", name="email-spool_resend", methods={"GET"})
      *
-     * @param $id
-     *
      * @throws Exception
-     *
-     * @return RedirectResponse
      */
-    public function resendAction($id)
+    public function resendAction(int $id): RedirectResponse
     {
-        /* @var Email $entity */
-        $entity = $this->repository->find($id);
+        $this->emailService->resendById($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Email entity.');
-        }
-
-        $entity->setStatus(Email::STATUS_READY);
-        $entity->setRetries(0);
-        $entity->setUpdatedAt(new DateTime());
-
-        $this->manager->persist($entity);
-        $this->manager->flush();
-
-        return $this->redirect($this->generateUrl('email-spool'));
+        return $this->redirectToRoute('email-spool');
     }
 
     /**
      * Cancel an email sending.
      *
-     * @Route("/{id}/cancel", name="email-spool_cancel", methods={"GET"})
-     *
-     * @param $id
+     * @Route("/{id}/cancel", name="email-spool_cancel", methods={"GET"}, requirements={"id" = "\d+"})
      *
      * @throws Exception
-     *
-     * @return RedirectResponse
      */
-    public function cancelAction($id)
+    public function cancelAction(int $id): RedirectResponse
     {
-        /* @var Email $entity */
-        $entity = $this->repository->find($id);
+        $this->emailService->cancelById($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Email entity.');
-        }
-
-        $entity->setStatus(Email::STATUS_CANCELLED);
-        $entity->setUpdatedAt(new DateTime());
-
-        $this->manager->persist($entity);
-        $this->manager->flush();
-
-        return $this->redirect($this->generateUrl('email-spool'));
+        return $this->redirectToRoute('email-spool');
     }
 
     /**
      * Deletes a Email entity.
      *
-     * @Route("/{id}/delete", name="email-spool_delete", methods={"GET"})
-     *
-     * @param $id
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     *
-     * @return RedirectResponse
+     * @Route("/{id}/delete", name="email-spool_delete", methods={"GET"}, requirements={"id" = "\d+"}))
      */
-    public function deleteAction($id)
+    public function deleteAction(int $id): RedirectResponse
     {
-        $entity = $this->repository->find($id);
+        $this->emailService->deleteById($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Email entity.');
-        }
-
-        $this->manager->remove($entity);
-        $this->manager->flush();
-
-        return $this->redirect($this->generateUrl('email-spool'));
+        return $this->redirectToRoute('email-spool');
     }
 }

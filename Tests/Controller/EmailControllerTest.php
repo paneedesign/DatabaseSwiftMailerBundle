@@ -8,22 +8,25 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class EmailControllerTest extends WebTestCase
 {
-    /*
-    public function testCompleteScenario()
+    public function testCompleteScenario(): void
     {
         // Create a new client to browse the application
         $client = static::createClient();
 
+        static::bootKernel();
+        $container = self::$kernel->getContainer();
+        $url = $container->get('router')->generate('email-spool');
+
         // Create a new entry in the database
-        $crawler = $client->request('GET', '/email-spool/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /email-spool/");
+        $crawler = $client->request('GET', $url);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Unexpected HTTP status code for GET /email-spool/');
         $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
 
         // Fill in the form and submit it
-        $form = $crawler->selectButton('Create')->form(array(
-            'ped_bundle_databaseswiftmailerbundle_email[field_name]'  => 'Test',
+        $form = $crawler->selectButton('Create')->form([
+            'ped_bundle_databaseswiftmailerbundle_email[field_name]' => 'Test',
             // ... other fields to fill
-        ));
+        ]);
 
         $client->submit($form);
         $crawler = $client->followRedirect();
@@ -34,10 +37,10 @@ class EmailControllerTest extends WebTestCase
         // Edit the entity
         $crawler = $client->click($crawler->selectLink('Edit')->link());
 
-        $form = $crawler->selectButton('Update')->form(array(
-            'ped_bundle_databaseswiftmailerbundle_email[field_name]'  => 'Foo',
+        $form = $crawler->selectButton('Update')->form([
+            'ped_bundle_databaseswiftmailerbundle_email[field_name]' => 'Foo',
             // ... other fields to fill
-        ));
+        ]);
 
         $client->submit($form);
         $crawler = $client->followRedirect();
@@ -52,6 +55,4 @@ class EmailControllerTest extends WebTestCase
         // Check the entity has been delete on the list
         $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
     }
-
-    */
 }

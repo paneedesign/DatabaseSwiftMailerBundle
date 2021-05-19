@@ -1,0 +1,27 @@
+includes:
+    # https://github.com/phpstan/phpstan-symfony
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    # https://github.com/phpstan/phpstan-doctrine
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    # https://github.com/phpstan/phpstan-phpunit
+    #- vendor/phpstan/phpstan-phpunit/extension.neon
+    #- vendor/phpstan/phpstan-phpunit/rules.neon
+    #- vendor/phpstan/phpstan-phpunit/strictRules.neon
+    # https://github.com/Jan0707/phpstan-prophecy
+    #- vendor/jangregor/phpstan-prophecy/src/extension.neon
+
+parameters:
+    level: max
+    paths:
+        - Controller
+        - DependencyInjection
+        - Entity
+        - Form
+        - Repository
+        - Service
+        - Spool
+        - Tests/Controller
+    # https://github.com/phpstan/phpstan-symfony
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    inferPrivatePropertyTypeFromConstructor: true

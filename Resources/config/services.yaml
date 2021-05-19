@@ -1,22 +1,36 @@
 services:
     repository.email:
-        class: PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository
-        factory: ["@=service(container.getParameter('ped_database_swift_mailer.entity_manager'))", 'getRepository']
+        class: PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository
+        factory: ['@=service(container.getParameter("ped_database_swift_mailer.entity_manager"))', 'getRepository']
         arguments: ['PedDatabaseSwiftMailerBundle:Email']
 
-    ped.database.swift_mailer.spool:
-        class: PaneeDesign\DatabaseSwiftMailerBundle\Spool\DatabaseSpool
-        arguments: ['@repository.email', '%ped_database_swift_mailer.params%']
+    PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository:
+        arguments: ['@doctrine']
+        tags: ['doctrine.repository_service']
 
-    swiftmailer.spool.db:
-        alias: ped.database.swift_mailer.spool
+    PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepositoryInterface: '@PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository'
 
-    swiftmailer.mailer.default.spool.db:
-        alias: ped.database.swift_mailer.spool
+    PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailService:
+        arguments: ['@=service(container.getParameter("ped_database_swift_mailer.entity_manager"))', '@repository.email']
+
+    PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface: '@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailService'
 
     PaneeDesign\DatabaseSwiftMailerBundle\Controller\EmailController:
-        public: true
-        tags: [controller.service_arguments]
         arguments:
-            $manager: "@=service(container.getParameter('ped_database_swift_mailer.entity_manager'))"
-            $repository: "@repository.email"
+            - '@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface'
+            - "@=container.hasParameter('ped_database_swift_mailer.views.max_page_rows') ? parameter('ped_database_swift_mailer.views.max_page_rows') : 30"
+        tags: ['controller.service_arguments']
+
+    PaneeDesign\DatabaseSwiftMailerBundle\Spool\DatabaseSpool:
+        arguments:
+            $emailService: '@PaneeDesign\DatabaseSwiftMailerBundle\Service\EmailServiceInterface'
+            $parameters:
+                auto_flush: "%ped_database_swift_mailer.auto_flush%"
+                max_retries: "%ped_database_swift_mailer.max_retries%"
+                delete_sent_messages: "%ped_database_swift_mailer.delete_sent_messages%"
+
+    swiftmailer.spool.db:
+        alias: PaneeDesign\DatabaseSwiftMailerBundle\Spool\DatabaseSpool
+
+    swiftmailer.mailer.default.spool.db:
+        alias: PaneeDesign\DatabaseSwiftMailerBundle\Spool\DatabaseSpool

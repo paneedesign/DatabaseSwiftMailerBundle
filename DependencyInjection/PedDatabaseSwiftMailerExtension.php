@@ -26,8 +26,14 @@ class PedDatabaseSwiftMailerExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('ped_database_swift_mailer.params', $config);
         $container->setParameter('ped_database_swift_mailer.entity_manager', $config['entity_manager']);
+        $container->setParameter('ped_database_swift_mailer.max_retries', $config['max_retries']);
+        $container->setParameter('ped_database_swift_mailer.delete_sent_messages', $config['delete_sent_messages']);
+        $container->setParameter('ped_database_swift_mailer.auto_flush', $config['auto_flush']);
+
+        if (\array_key_exists('views', $config)) {
+            $container->setParameter('ped_database_swift_mailer.views.max_page_rows', $config['views']['max_page_rows']);
+        }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');

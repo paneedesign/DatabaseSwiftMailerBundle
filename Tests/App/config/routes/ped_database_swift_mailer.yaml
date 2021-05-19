@@ -1,5 +1,5 @@
 ped_database_swift_mailer:
-    resource: "@PedDatabaseSwiftMailerBundle/Controller/"
+    resource: PaneeDesign\DatabaseSwiftMailerBundle\Controller\EmailController
     type:     annotation
     prefix:   /email-spool
     options:

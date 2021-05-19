@@ -5,29 +5,28 @@ declare(strict_types=1);
 namespace PaneeDesign\DatabaseSwiftMailerBundle\Entity;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Swift_Message;
+use Exception;
 use Swift_Mime_SimpleMessage;
 
 /**
- * Email.
- *
  * @ORM\Table(name="ped_email_spool")
- * @ORM\Entity(repositoryClass="PaneeDesign\DatabaseSwiftMailerBundle\Entity\EmailRepository")
+ * @ORM\Entity(repositoryClass="PaneeDesign\DatabaseSwiftMailerBundle\Repository\EmailRepository")
  */
 class Email
 {
-    const STATUS_FAILED = 'FAILED';
-    const STATUS_READY = 'READY';
-    const STATUS_PROCESSING = 'PROCESSING';
-    const STATUS_COMPLETE = 'COMPLETE';
-    const STATUS_CANCELLED = 'CANCELLED';
+    public const STATUS_FAILED = 'FAILED';
+    public const STATUS_READY = 'READY';
+    public const STATUS_PROCESSING = 'PROCESSING';
+    public const STATUS_COMPLETE = 'COMPLETE';
+    public const STATUS_CANCELLED = 'CANCELLED';
 
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -47,28 +46,28 @@ class Email
     private $fromEmail;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="to_email", type="string", length=255, nullable=true)
      */
     private $toEmail;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="cc_email", type="string", length=255, nullable=true)
      */
     private $ccEmail;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="bcc_email", type="string", length=255, nullable=true)
      */
     private $bccEmail;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="reply_to_email", type="string", length=255, nullable=true)
      */
@@ -103,32 +102,42 @@ class Email
     private $retries = 0;
 
     /**
-     * @var DateTime
+     * @var ?DateTimeInterface
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
 
     /**
-     * @var DateTime
+     * @var ?DateTimeInterface
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 
     /**
-     * @var DateTime
+     * @var ?DateTimeInterface
      *
      * @ORM\Column(name="sent_at", type="datetime", nullable=true)
      */
     private $sentAt;
 
     /**
-     * @var Swift_Message
+     * @var ?string
      *
      * @ORM\Column(name="error_message", type="text", nullable=true)
      */
     private $errorMessage;
+
+    /**
+     * Email constructor.
+     *
+     * @throws Exception
+     */
+    public function __construct()
+    {
+        $this->createdAt = new DateTime();
+    }
 
     /**
      * Get id.
@@ -140,255 +149,143 @@ class Email
         return $this->id;
     }
 
-    /**
-     * Set subject.
-     *
-     * @param string $subject
-     *
-     * @return Email
-     */
-    public function setSubject($subject)
+    public function setSubject(string $subject): void
     {
         $this->subject = $subject;
-
-        return $this;
     }
 
-    /**
-     * Get subject.
-     *
-     * @return string
-     */
-    public function getSubject()
+    public function getSubject(): string
     {
         return $this->subject;
     }
 
-    /**
-     * Set fromEmail.
-     *
-     * @param string $fromEmail
-     *
-     * @return Email
-     */
-    public function setFromEmail($fromEmail)
+    public function setFromEmail(string $fromEmail): void
     {
         $this->fromEmail = $fromEmail;
-
-        return $this;
     }
 
-    /**
-     * Get fromEmail.
-     *
-     * @return string
-     */
-    public function getFromEmail()
+    public function getFromEmail(): string
     {
         return $this->fromEmail;
     }
 
-    /**
-     * Set toEmail.
-     *
-     * @param string $toEmail
-     *
-     * @return Email
-     */
-    public function setToEmail($toEmail)
+    public function setToEmail(?string $toEmail): void
     {
         $this->toEmail = $toEmail;
-
-        return $this;
     }
 
-    /**
-     * Get toEmail.
-     *
-     * @return string
-     */
-    public function getToEmail()
+    public function getToEmail(): ?string
     {
         return $this->toEmail;
     }
 
-    /**
-     * @return string
-     */
-    public function getCcEmail()
-    {
-        return $this->ccEmail;
-    }
-
-    /**
-     * @param string $ccEmail
-     */
-    public function setCcEmail($ccEmail): void
+    public function setCcEmail(?string $ccEmail): void
     {
         $this->ccEmail = $ccEmail;
     }
 
-    /**
-     * @return string
-     */
-    public function getBccEmail()
+    public function getCcEmail(): ?string
     {
-        return $this->bccEmail;
+        return $this->ccEmail;
     }
 
-    /**
-     * @param string $bccEmail
-     */
-    public function setBccEmail($bccEmail): void
+    public function setBccEmail(?string $bccEmail): void
     {
         $this->bccEmail = $bccEmail;
     }
 
-    /**
-     * @return string
-     */
-    public function getReplyToEmail()
+    public function getBccEmail(): ?string
+    {
+        return $this->bccEmail;
+    }
+
+    public function setReplyToEmail(?string $replyToEmail): void
+    {
+        $this->replyToEmail = $replyToEmail;
+    }
+
+    public function getReplyToEmail(): ?string
     {
         return $this->replyToEmail;
     }
 
-    /**
-     * @param string $replyToEmail
-     *
-     * @return Email
-     */
-    public function setReplyToEmail($replyToEmail)
-    {
-        $this->replyToEmail = $replyToEmail;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBody()
-    {
-        return $this->body;
-    }
-
-    /**
-     * @param string $body
-     */
-    public function setBody($body): void
+    public function setBody(string $body): void
     {
         $this->body = $body;
     }
 
-    /**
-     * @return Swift_Mime_SimpleMessage
-     */
-    public function getMessage()
+    public function getBody(): string
     {
-        return unserialize(base64_decode($this->message));
+        return $this->body;
     }
 
-    /**
-     * @param Swift_Mime_SimpleMessage $message
-     */
     public function setMessage(Swift_Mime_SimpleMessage $message): void
     {
         $this->message = base64_encode(serialize($message));
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt()
+    public function getMessage(): Swift_Mime_SimpleMessage
     {
-        return $this->createdAt;
+        return unserialize(base64_decode($this->message));
     }
 
-    /**
-     * @param DateTime $createdAt
-     */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt(DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt()
+    public function getCreatedAt(): ?DateTimeInterface
     {
-        return $this->updatedAt;
+        return $this->createdAt;
     }
 
-    /**
-     * @param DateTime $updatedAt
-     */
-    public function setUpdatedAt($updatedAt): void
+    public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getSentAt()
+    public function getUpdatedAt(): ?DateTimeInterface
     {
-        return $this->sentAt;
+        return $this->updatedAt;
     }
 
-    /**
-     * @param DateTime $sentAt
-     */
-    public function setSentAt($sentAt): void
+    public function setSentAt(DateTimeInterface $sentAt): void
     {
         $this->sentAt = $sentAt;
     }
 
-    /**
-     * @return Swift_Message
-     */
-    public function getErrorMessage()
+    public function getSentAt(): ?DateTimeInterface
     {
-        return $this->errorMessage;
+        return $this->sentAt;
     }
 
-    /**
-     * @param string $errorMessage
-     */
-    public function setErrorMessage($errorMessage): void
+    public function setErrorMessage(?string $errorMessage): void
     {
         $this->errorMessage = $errorMessage;
     }
 
-    /**
-     * @return string
-     */
-    public function getStatus()
+    public function getErrorMessage(): ?string
     {
-        return $this->status;
+        return $this->errorMessage;
     }
 
-    /**
-     * @param string $status
-     */
-    public function setStatus($status): void
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }
 
-    /**
-     * @return int
-     */
-    public function getRetries()
+    public function getStatus(): string
     {
-        return $this->retries;
+        return $this->status;
     }
 
-    /**
-     * @param int $retries
-     */
     public function setRetries(int $retries): void
     {
         $this->retries = $retries;
+    }
+
+    public function getRetries(): int
+    {
+        return $this->retries;
     }
 }
